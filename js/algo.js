@@ -4,7 +4,7 @@ var black = '<div style="display:block; padding:0px; margin:0px; width:63px; hei
 
 function make_id() {
 	letters = ["A","B","C","D","E","F","G","H"]
-	nums = ["1","2","3","4","5","6","7","8"]
+	var nums = ["1","2","3","4","5","6","7","8"]
 	var id = []
 	for (e in letters) {
 		for (a in nums) {
@@ -21,6 +21,15 @@ function make_cols() {
 	for (var i=1;i<9;i++) {
 		var number = '<div style="display:block; padding:0px;margin:0px; width:63px;height:63px;float:left; background-color: #FFFFFF; font-size: 5ex">%data%</div>'
 		$("#col").append(number.replace("%data%", i));
+	}
+
+
+}
+
+function make_rows() {
+	for (e in letters) {
+		var number = '<div style="display:block; padding:0px;margin:0px; width:63px;height:63px;float:right; background-color: #FFFFFF; font-size: 5ex">%data%</div>'
+		$("#row").append(number.replace("%data%", letters[e]));
 	}
 
 
@@ -46,3 +55,4 @@ function make_checkers() {
 
 make_checkers();
 make_cols();
+make_rows();
