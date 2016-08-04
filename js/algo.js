@@ -1,6 +1,6 @@
 
-var green = '<div style="display:block; padding:0px; margin:0px; width:48px; height:48px; float:left; background-color:#17A70D;" id="%data%"></div>';
-var black = '<div style="display:block; padding:0px; margin:0px; width:48px; height:48px; float:left; background-color:#000000;" id="%data%"></div>';
+var green = '<div style="display:block; padding:0px; margin:0px; width:63px; height:63px; float:left; background-color:#17A70D;" id="%data%"></div>';
+var black = '<div style="display:block; padding:0px; margin:0px; width:63px; height:63px; float:left; background-color:#000000;" id="%data%"></div>';
 
 function make_id() {
 	letters = ["A","B","C","D","E","F","G","H"]
