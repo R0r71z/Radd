@@ -16,6 +16,15 @@ function make_id() {
 
 var id = make_id();
 
+
+function make_cols() {
+	for (var i=1;i<9;i++) {
+		var number = '<div style="display:block; padding:0px;margin:0px; width:63px;height:63px;float:left; background-color: #FFFFFF; font-size: 5ex">%data%</div>'
+		$("#col").append(number.replace("%data%", i));
+	}
+
+
+}
 function make_checkers() {
 	var count = 0;
 	while (count<4) {
@@ -36,3 +45,4 @@ function make_checkers() {
 }
 
 make_checkers();
+make_cols();
