@@ -53,6 +53,23 @@ function make_checkers() {
 	}
 }
 
+function show_nl() {
+	make_cols();
+	make_rows();
+	$(document.getElementById("show").remove());
+	$('#gamearea').append('<button id="hide" type="button" onclick="hide_nl()" style="color: black; background-color:gray; float:left; margin-top:20px;"><b>Hide Numbers/Letters</b></button>');
+}
+
+
+function hide_nl() {
+	$(document.getElementById("row").remove());
+	$(document.getElementById("col").remove());
+	$('#gamearea').prepend('<div id="col" style="width: 504px; height: 63px; margin:0px;"></div>');
+	$('#gamearea').prepend('<div id="row" style="width: 63px; height:504px; float:left; margin-top: 80px;"></div>');
+	$(document.getElementById('hide').remove());
+	$('#gamearea').append('<button id="show" type="button" onclick="show_nl()" style="color: black; background-color:gray; float:left; margin-top:20px;"><b>Show Numbers/Letters</b></button>');
+
+}
+	
+
 make_checkers();
-make_cols();
-make_rows();
