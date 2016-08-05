@@ -70,6 +70,21 @@ function hide_nl() {
 	$('#gamearea').append('<button id="show" type="button" onclick="show_nl()" style="color: black; background-color:gray; float:left; margin-top:20px;"><b>Show Numbers/Letters</b></button>');
 
 }
+
+var token = function(h,w,color) {
+	this.color = color;
+	this.height = h;
+	this.width = w;
+}
+
+var draw = function(rad,m) {
+	var element = '<div id="' + m.replace("#", "") +'tok" style="width: %width%px; height: %height%px; background: %color%; -moz-border-radius: 50px; -webkit-border-radius: 50px;border-radius: 50px; %addposition%"></div>'
+	var element = element.replace("%height%", rad.height);
+	var element = element.replace("%width%", rad.width);
+	var element = element.replace("%color%", rad.color);
+	var element = element.replace("%addposition%", "margin-top: 10px; margin-left: 0px;");
+	$(m).append(element);
+}
 	
 
 make_checkers();
