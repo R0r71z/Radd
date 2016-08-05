@@ -79,7 +79,7 @@ var draw = function(rad,m) {
 	var element = element.replace("%height%", rad.height);
 	var element = element.replace("%width%", rad.width);
 	var element = element.replace("%color%", rad.color);
-	var element = element.replace("%addposition%", "margin-top: 10px; margin-left: 0px border: groove;");
+	var element = element.replace("%addposition%", "margin-top: 10px; margin-left: 0px; border: double;");
 	$(m).append(element);
 };
 	
@@ -89,10 +89,14 @@ function tokenSquares() {
 	var p1_token = new token(40,40,"gray");
 	var p2_token = new token(40,40,"pink");
 	for (e in p2_squares) {
-		draw(p2_token,"#"+p2_squares[e]);
+		if (document.getElementById(p2_squares[e]+"tok") == null) {
+			draw(p2_token,"#"+p2_squares[e]);
+		}
 	}
 	for (e in p1_squares) {
-		draw(p1_token, "#"+p1_squares[e]);
+		if (document.getElementById(p1_squares[e]+"tok") == null) {
+			draw(p1_token,"#"+p1_squares[e]);
+		}
 	}
 };
 
