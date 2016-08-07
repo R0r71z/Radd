@@ -111,7 +111,13 @@ function play() {
 	}
 };
 
-
+function delete_token(token) {
+	if (document.getElementById(token) != null) {
+		$("#"+token).remove();
+	} else {
+		console.log("There is no such token")
+	}
+};
 
 function reset() {
 	if (game_started == false) {
