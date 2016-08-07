@@ -100,4 +100,29 @@ function tokenSquares() {
 	}
 };
 
+var game_started = false;
+
+function play() {
+	if (game_started == false) {
+		tokenSquares();
+		game_started = true;
+	} else {
+		alert("Game already started!");
+	}
+};
+
+
+
+function reset() {
+	if (game_started == false) {
+		alert("Hit play first!");
+	} else {
+		id = make_id();
+		for (e in id){
+			$(id[e]).remove();
+			tokenSquares();
+		}
+	}
+};
+
 make_checkers();
