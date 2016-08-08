@@ -1,6 +1,7 @@
 
 var green = '<div style="display:block; padding:0px; margin:0px; width:63px; height:63px; float:left; background-color:#17A70D;" id="%data%"></div>';
 var black = '<div style="display:block; padding:0px; margin:0px; width:63px; height:63px; float:left; background-color:#000000;" id="%data%"></div>';
+var tokens = [];
 
 function make_id() {
 	letters = ["A","B","C","D","E","F","G","H"];
@@ -80,6 +81,7 @@ var draw = function(rad,m) {
 	var element = element.replace("%width%", rad.width);
 	var element = element.replace("%color%", rad.color);
 	var element = element.replace("%addposition%", "margin-top: 10px; margin-left: 0px; border: double;");
+	tokens.push(m +'tok');
 	$(m).append(element);
 };
 	
@@ -112,8 +114,8 @@ function play() {
 };
 
 function delete_token(token) {
-	if (document.getElementById(token) != null) {
-		$("#"+token).remove();
+	if (document.getElementById(token.replace("#","")) != null) {
+		$(token).remove();
 	} else {
 		console.log("There is no such token")
 	}
@@ -131,4 +133,105 @@ function reset() {
 	}
 };
 
+function reset_moves() {
+	id = make_id();
+	for (e in id) {
+		$("#"+id[e]).css("-webkit-box-shadow", "none");
+	}
+}
+
+var av_moves = function(token) {
+	var moves = {
+	}
+	for (e in moves) {
+		if (e == token) {
+			for (a in moves[e]) {
+				if ($("#"+moves[e][a]).is(":empty")){
+					i = document.getElementById(moves[e][a]);
+					$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
+					setTimeout(function(){
+					reset_moves();
+					}, 1500);
+				}
+			}
+		}
+	}
+}
+
+function click_functions() {
+	$("#A2tok").click(function(){
+		av_moves("A2tok");
+	});
+	$("#A4tok").click(function(){
+		av_moves("A2tok");
+	});
+	$("#A6tok").click(function(){
+		av_moves("A6tok");
+	});
+	$("#A8tok").click(function(){
+		av_moves("A8tok");
+	});
+	$("#B1tok").click(function(){
+		av_moves("B8tok");
+	});
+	$("#B3tok").click(function(){
+		av_moves("B3tok");
+	});
+	$("#B5tok").click(function(){
+		av_moves("B5tok");
+	});
+	$("#B7tok").click(function(){
+		av_moves("B7tok");
+	});
+	$("#C2tok").click(function(){
+		av_moves("C2tok");
+	});
+	$("#C4tok").click(function(){
+		av_moves("C4tok");
+	});
+	$("#C6tok").click(function(){
+		av_moves("C6tok");
+	});
+	$("#C8tok").click(function(){
+		av_moves("C8tok");
+	});
+	$("#F1tok").click(function(){
+		av_moves("F1tok");
+	});
+	$("#F3tok").click(function(){
+		av_moves("F3tok");
+	});
+	$("#F5tok").click(function(){
+		av_moves("F5tok");
+	});
+	$("#F7tok").click(function(){
+		av_moves("F7tok");
+	});
+	$("#G2tok").click(function(){
+		av_moves("G2tok");
+	});
+	$("#G4tok").click(function(){
+		av_moves("G4tok");
+	});
+	$("#G6tok").click(function(){
+		av_moves("G6tok");
+	});
+	$("#G8tok").click(function(){
+		av_moves("G8tok");
+	});
+	$("#H1tok").click(function(){
+		av_moves("H1tok");
+	});
+	$("#H3tok").click(function(){
+		av_moves("H3tok");
+	});
+	$("#H5tok").click(function(){
+		av_moves("H5tok");
+	});
+	$("#H7tok").click(function(){
+		av_moves("H7tok");
+	});
+};
+
+click_functions();
 make_checkers();
