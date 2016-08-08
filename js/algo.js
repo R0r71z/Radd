@@ -107,6 +107,7 @@ var game_started = false;
 function play() {
 	if (game_started == false) {
 		tokenSquares();
+		click_functions();
 		game_started = true;
 	} else {
 		alert("Game already started!");
@@ -140,18 +141,84 @@ function reset_moves() {
 	}
 }
 
-var av_moves = function(token) {
+var av_moves = function(square) {
+	var p2_squares = ["A2","A4","A6","A8","B1","B3","B5","B7","C2","C4","C6","C8"];
+	var p1_squares = ["F1","F3","F5","F7","G2","G4","G6","G8","H1","H3","H5","H7"];
 	var moves = {
+		"p2_moves": {
+			"A2": ["B1","B3"],
+			"A4": ["B3","B5"],
+			"A6": ["B5","B7"],
+			"A8": ["B7"],
+			"B1": ["C2"],
+			"B3": ["C2","C4"],
+			"B5": ["C4","C6"],
+			"B7": ["C6", "C8"],
+			"C2": ["D1","D3"],
+			"C4": ["D3","D5"],
+			"C6": ["D5","D7"],
+			"C8": ["D7"],
+			"D1": ["E2"],
+			"D3": ["E2","E4"],
+			"D5": ["E4","46"],
+			"D7": ["E6", "E8"],
+			"E2": ["F1","F3"],
+			"E4": ["F3","F5"],
+			"E6": ["F5", "F7"],
+			"E8": ["F7"],
+			"F1": ["G2"],
+			"F3": ["G2","G4"],
+			"F5": ["G4","G6"],
+			"F7": ["G6","G8"],
+			"G2": ["H1","H3"],
+			"G4": ["H3","H5"],
+			"G6": ["H5","H7"],
+			"G8": ["H7"]
+		},
+		"p1_moves": {
+			"B1": ["A2"],
+			"B3": ["A4","A2"],
+			"B5": ["A6","A4"],
+			"B7": ["A8", "A6"],
+			"C2": ["B3","B1"],
+			"C4": ["B5","B3"],
+			"C6": ["B7","B5"],
+			"C8": ["B7"],
+			"D1": ["C2"],
+			"D3": ["C4","C2"],
+			"D5": ["C6","C4"],
+			"D7": ["C8", "C6"],
+			"E2": ["D3","D1"],
+			"E4": ["D5","D3"],
+			"E6": ["D7", "D5"],
+			"E8": ["D7"],
+			"F1": ["E2"],
+			"F3": ["E4","E2"],
+			"F5": ["E6","E4"],
+			"F7": ["E8","E6"],
+			"G2": ["F3","F1"],
+			"G4": ["F5","F3"],
+			"G6": ["F7","F5"],
+			"G8": ["F7"],
+			"H1": ["G2"],
+			"H3": ["G4","G2"],
+			"H5": ["G6", "G4"],
+			"H7": ["G8","G6"]
+		}
 	}
 	for (e in moves) {
-		if (e == token) {
-			for (a in moves[e]) {
-				if ($("#"+moves[e][a]).is(":empty")){
-					i = document.getElementById(moves[e][a]);
-					$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
-					setTimeout(function(){
-					reset_moves();
-					}, 1500);
+		for (a in moves[e]) {
+			if (a == square) {
+				for (k in moves[e][a]) {
+					if ($("#"+moves[e][a][k]).is(":empty") == true){
+						if ($("#"+square).is(":empty") == false) {
+							i = document.getElementById(moves[e][a][k]);
+							$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
+							setTimeout(function(){
+							reset_moves();
+							}, 1500);
+						}
+					}
 				}
 			}
 		}
@@ -159,79 +226,102 @@ var av_moves = function(token) {
 }
 
 function click_functions() {
-	$("#A2tok").click(function(){
-		av_moves("A2tok");
+	$("#D1").click(function(){
+		av_moves("D1");
 	});
-	$("#A4tok").click(function(){
-		av_moves("A2tok");
+	$("#D3").click(function(){
+		av_moves("D3");
 	});
-	$("#A6tok").click(function(){
-		av_moves("A6tok");
+	$("#D5").click(function(){
+		av_moves("D5");
 	});
-	$("#A8tok").click(function(){
-		av_moves("A8tok");
+	$("#D7").click(function(){
+		av_moves("D7");
 	});
-	$("#B1tok").click(function(){
-		av_moves("B8tok");
+	$("#E2").click(function(){
+		av_moves("E2");
 	});
-	$("#B3tok").click(function(){
-		av_moves("B3tok");
+	$("#E4").click(function(){
+		av_moves("E4");
 	});
-	$("#B5tok").click(function(){
-		av_moves("B5tok");
+	$("#E6").click(function(){
+		av_moves("E6");
 	});
-	$("#B7tok").click(function(){
-		av_moves("B7tok");
+	$("#E8").click(function(){
+		av_moves("E8");
 	});
-	$("#C2tok").click(function(){
-		av_moves("C2tok");
+	$("#A2").click(function(){
+		av_moves("A2");
 	});
-	$("#C4tok").click(function(){
-		av_moves("C4tok");
+	$("#A4").click(function(){
+		av_moves("A2");
 	});
-	$("#C6tok").click(function(){
-		av_moves("C6tok");
+	$("#A6").click(function(){
+		av_moves("A6");
 	});
-	$("#C8tok").click(function(){
-		av_moves("C8tok");
+	$("#A8").click(function(){
+		av_moves("A8");
 	});
-	$("#F1tok").click(function(){
-		av_moves("F1tok");
+	$("#B1").click(function(){
+		av_moves("B1");
 	});
-	$("#F3tok").click(function(){
-		av_moves("F3tok");
+	$("#B3").click(function(){
+		av_moves("B3");
 	});
-	$("#F5tok").click(function(){
-		av_moves("F5tok");
+	$("#B5").click(function(){
+		av_moves("B5");
 	});
-	$("#F7tok").click(function(){
-		av_moves("F7tok");
+	$("#B7").click(function(){
+		av_moves("B7");
 	});
-	$("#G2tok").click(function(){
-		av_moves("G2tok");
+	$("#C2").click(function(){
+		av_moves("C2");
 	});
-	$("#G4tok").click(function(){
-		av_moves("G4tok");
+	$("#C4").click(function(){
+		av_moves("C4");
 	});
-	$("#G6tok").click(function(){
-		av_moves("G6tok");
+	$("#C6").click(function(){
+		av_moves("C6");
 	});
-	$("#G8tok").click(function(){
-		av_moves("G8tok");
+	$("#C8").click(function(){
+		av_moves("C8");
 	});
-	$("#H1tok").click(function(){
-		av_moves("H1tok");
+	$("#F1").click(function(){
+		av_moves("F1");
 	});
-	$("#H3tok").click(function(){
-		av_moves("H3tok");
+	$("#F3").click(function(){
+		av_moves("F3");
 	});
-	$("#H5tok").click(function(){
-		av_moves("H5tok");
+	$("#F5").click(function(){
+		av_moves("F5");
 	});
-	$("#H7tok").click(function(){
-		av_moves("H7tok");
+	$("#F7").click(function(){
+		av_moves("F7");
+	});
+	$("#G2").click(function(){
+		av_moves("G2");
+	});
+	$("#G4").click(function(){
+		av_moves("G4");
+	});
+	$("#G6").click(function(){
+		av_moves("G6");
+	});
+	$("#G8").click(function(){
+		av_moves("G8");
+	});
+	$("#H1").click(function(){
+		av_moves("H1");
+	});
+	$("#H3").click(function(){
+		av_moves("H3");
+	});
+	$("#H5").click(function(){
+		av_moves("H5");
+	});
+	$("#H7").click(function(){
+		av_moves("H7");
 	});
 };
 
-click_functions();
 make_checkers();
