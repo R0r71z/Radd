@@ -123,12 +123,13 @@ function delete_token(token) {
 };
 
 function reset() {
+	var p2_tokens = ["#A2tok","#A4tok","#A6tok","#A8tok","#B1tok","#B3tok","#B5tok","#B7tok","#C2tok","#C4tok","#C6tok","#C8tok"];
+	var p1_tokes = ["#F1tok","#F3tok","#F5tok","#F7tok","#G2tok","#G4tok","#G6tok","#G8tok","#H1tok","#H3tok","#H5tok","#H7tok"];
 	if (game_started == false) {
 		alert("Hit play first!");
 	} else {
-		id = make_id();
-		for (e in id){
-			$(id[e]).remove();
+		for (e in p2_tokens){
+			delete_token(p2_tokens[e]);
 			tokenSquares();
 		}
 	}
@@ -152,8 +153,8 @@ function turns(){
 };
 
 var av_moves = function(square) {
-	var p2_squares = ["A2","A4","A6","A8","B1","B3","B5","B7","C2","C4","C6","C8"];
-	var p1_squares = ["F1","F3","F5","F7","G2","G4","G6","G8","H1","H3","H5","H7"];
+	var p2_tokens = ["A2tok","A4tok","A6tok","A8tok","B1tok","B3tok","B5tok","B7tok","C2tok","C4tok","C6tok","C8tok"];
+	var p1_tokes = ["F1tok","F3tok","F5tok","F7tok","G2tok","G4tok","G6tok","G8tok","H1tok","H3tok","H5tok","H7tok"];
 	var moves = {
 		"p2_moves": {
 			"A2": ["B3","B1"],
