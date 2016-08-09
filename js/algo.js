@@ -139,28 +139,38 @@ function reset_moves() {
 	for (e in id) {
 		$("#"+id[e]).css("-webkit-box-shadow", "none");
 	}
-}
+};
+
+turn = true;
+
+function turns(){
+	if (turn == true) {
+		turn = false;
+	} else {
+		turn == false;
+	}
+};
 
 var av_moves = function(square) {
 	var p2_squares = ["A2","A4","A6","A8","B1","B3","B5","B7","C2","C4","C6","C8"];
 	var p1_squares = ["F1","F3","F5","F7","G2","G4","G6","G8","H1","H3","H5","H7"];
 	var moves = {
 		"p2_moves": {
-			"A2": ["B1","B3"],
-			"A4": ["B3","B5"],
-			"A6": ["B5","B7"],
+			"A2": ["B3","B1"],
+			"A4": ["B5", "B3"],
+			"A6": ["B7","B5"],
 			"A8": ["B7"],
 			"B1": ["C2"],
-			"B3": ["C2","C4"],
-			"B5": ["C4","C6"],
-			"B7": ["C6", "C8"],
-			"C2": ["D1","D3"],
-			"C4": ["D3","D5"],
-			"C6": ["D5","D7"],
+			"B3": ["C4","C2"],
+			"B5": ["C6","C4"],
+			"B7": ["C8", "C6"],
+			"C2": ["D3","D1"],
+			"C4": ["D5","D3"],
+			"C6": ["D7","D5"],
 			"C8": ["D7"],
 			"D1": ["E2"],
 			"D3": ["E2","E4"],
-			"D5": ["E4","46"],
+			"D5": ["E4","E6"],
 			"D7": ["E6", "E8"],
 			"E2": ["F1","F3"],
 			"E4": ["F3","F5"],
@@ -206,13 +216,29 @@ var av_moves = function(square) {
 			"H7": ["G8","G6"]
 		}
 	}
-	for (e in moves) {
-		for (a in moves[e]) {
-			if (a == square) {
-				for (k in moves[e][a]) {
-					if ($("#"+moves[e][a][k]).is(":empty") == true){
+	if (turn == true) {
+		for (e in moves.p1_moves) {
+			if (e == square) {
+				for (a in e) {
+					if ($("#"+moves.p1_moves[e][a]).is(":empty") == true){
 						if ($("#"+square).is(":empty") == false) {
-							i = document.getElementById(moves[e][a][k]);
+							i = document.getElementById(moves["p1_moves"][e][a]);
+							$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
+							setTimeout(function(){
+							reset_moves();
+							}, 1500);
+						}
+					}
+				}
+			}
+		}
+	} else {
+		for (e in moves.p2_moves) {
+			if (e == square) {
+				for (a in e) {
+					if ($("#"+moves.p2_moves[e][a]).is(":empty") == true){
+						if ($("#"+square).is(":empty") == false) {
+							i = document.getElementById(moves["p2_moves"][e][a]);
 							$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
 							setTimeout(function(){
 							reset_moves();
@@ -254,7 +280,7 @@ function click_functions() {
 		av_moves("A2");
 	});
 	$("#A4").click(function(){
-		av_moves("A2");
+		av_moves("A4");
 	});
 	$("#A6").click(function(){
 		av_moves("A6");
