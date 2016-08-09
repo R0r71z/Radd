@@ -148,13 +148,13 @@ function turns(){
 	if (turn == true) {
 		turn = false;
 	} else {
-		turn == false;
+		turn == true;
 	}
 };
 
 var av_moves = function(square) {
 	var p2_tokens = ["A2tok","A4tok","A6tok","A8tok","B1tok","B3tok","B5tok","B7tok","C2tok","C4tok","C6tok","C8tok"];
-	var p1_tokes = ["F1tok","F3tok","F5tok","F7tok","G2tok","G4tok","G6tok","G8tok","H1tok","H3tok","H5tok","H7tok"];
+	var p1_tokens = ["F1tok","F3tok","F5tok","F7tok","G2tok","G4tok","G6tok","G8tok","H1tok","H3tok","H5tok","H7tok"];
 	var moves = {
 		"p2_moves": {
 			"A2": ["B3","B1"],
@@ -220,14 +220,16 @@ var av_moves = function(square) {
 	if (turn == true) {
 		for (e in moves.p1_moves) {
 			if (e == square) {
-				for (a in e) {
-					if ($("#"+moves.p1_moves[e][a]).is(":empty") == true){
-						if ($("#"+square).is(":empty") == false) {
-							i = document.getElementById(moves["p1_moves"][e][a]);
-							$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
-							setTimeout(function(){
-							reset_moves();
-							}, 1500);
+				if (p1_tokens.indexOf(square+"tok") != -1 ) {
+					for (a in e) {
+						if ($("#"+moves.p1_moves[e][a]).is(":empty") == true){
+							if ($("#"+square).is(":empty") == false) {
+								i = document.getElementById(moves["p1_moves"][e][a]);
+								$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
+								setTimeout(function(){
+								reset_moves();
+								}, 1500);
+							}
 						}
 					}
 				}
@@ -236,14 +238,16 @@ var av_moves = function(square) {
 	} else {
 		for (e in moves.p2_moves) {
 			if (e == square) {
-				for (a in e) {
-					if ($("#"+moves.p2_moves[e][a]).is(":empty") == true){
-						if ($("#"+square).is(":empty") == false) {
-							i = document.getElementById(moves["p2_moves"][e][a]);
-							$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
-							setTimeout(function(){
-							reset_moves();
-							}, 1500);
+				if (p2_tokens.indexOf(square+"tok") != -1) {
+					for (a in e) {
+						if ($("#"+moves.p2_moves[e][a]).is(":empty") == true){
+							if ($("#"+square).is(":empty") == false) {
+								i = document.getElementById(moves["p2_moves"][e][a]);
+								$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
+								setTimeout(function(){
+								reset_moves();
+								}, 1500);
+							}
 						}
 					}
 				}
