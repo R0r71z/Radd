@@ -124,14 +124,17 @@ function delete_token(token) {
 
 function reset() {
 	var p2_tokens = ["#A2tok","#A4tok","#A6tok","#A8tok","#B1tok","#B3tok","#B5tok","#B7tok","#C2tok","#C4tok","#C6tok","#C8tok"];
-	var p1_tokes = ["#F1tok","#F3tok","#F5tok","#F7tok","#G2tok","#G4tok","#G6tok","#G8tok","#H1tok","#H3tok","#H5tok","#H7tok"];
+	var p1_tokens = ["#F1tok","#F3tok","#F5tok","#F7tok","#G2tok","#G4tok","#G6tok","#G8tok","#H1tok","#H3tok","#H5tok","#H7tok"];
 	if (game_started == false) {
 		alert("Hit play first!");
 	} else {
 		for (e in p2_tokens){
 			delete_token(p2_tokens[e]);
-			tokenSquares();
 		}
+		for (e in p1_tokens) {
+			delete_token(p1_tokens[e]);
+		}
+		tokenSquares();
 	}
 };
 
@@ -142,13 +145,15 @@ function reset_moves() {
 	}
 };
 
-turn = true;
+var turn = true;
 
 function turns(){
 	if (turn == true) {
 		turn = false;
 	} else {
-		turn == true;
+		if (turn == false) {
+			turn = true;
+		}
 	}
 };
 
@@ -217,6 +222,8 @@ var av_moves = function(square) {
 			"H7": ["G8","G6"]
 		}
 	}
+	var moveto = [];
+	var moveMe = [];
 	if (turn == true) {
 		for (e in moves.p1_moves) {
 			if (e == square) {
@@ -227,8 +234,10 @@ var av_moves = function(square) {
 								i = document.getElementById(moves["p1_moves"][e][a]);
 								$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
 								setTimeout(function(){
-								reset_moves();
+									reset_moves();
 								}, 1500);
+								moveto.push(moves["p1_moves"][e][a]);
+								moveMe.push(p1_tokens[p1_tokens.indexOf(square+"tok")]);
 							}
 						}
 					}
@@ -245,8 +254,10 @@ var av_moves = function(square) {
 								i = document.getElementById(moves["p2_moves"][e][a]);
 								$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
 								setTimeout(function(){
-								reset_moves();
+									reset_moves();
 								}, 1500);
+								moveto.push(moves["p2_moves"][e][a]);
+								moveMe.push(p2_tokens[p2_tokens.indexOf(square+"tok")]);
 							}
 						}
 					}
@@ -254,105 +265,25 @@ var av_moves = function(square) {
 			}
 		}
 	}
-}
-
-function click_functions() {
-	$("#D1").click(function(){
-		av_moves("D1");
-	});
-	$("#D3").click(function(){
-		av_moves("D3");
-	});
-	$("#D5").click(function(){
-		av_moves("D5");
-	});
-	$("#D7").click(function(){
-		av_moves("D7");
-	});
-	$("#E2").click(function(){
-		av_moves("E2");
-	});
-	$("#E4").click(function(){
-		av_moves("E4");
-	});
-	$("#E6").click(function(){
-		av_moves("E6");
-	});
-	$("#E8").click(function(){
-		av_moves("E8");
-	});
-	$("#A2").click(function(){
-		av_moves("A2");
-	});
-	$("#A4").click(function(){
-		av_moves("A4");
-	});
-	$("#A6").click(function(){
-		av_moves("A6");
-	});
-	$("#A8").click(function(){
-		av_moves("A8");
-	});
-	$("#B1").click(function(){
-		av_moves("B1");
-	});
-	$("#B3").click(function(){
-		av_moves("B3");
-	});
-	$("#B5").click(function(){
-		av_moves("B5");
-	});
-	$("#B7").click(function(){
-		av_moves("B7");
-	});
-	$("#C2").click(function(){
-		av_moves("C2");
-	});
-	$("#C4").click(function(){
-		av_moves("C4");
-	});
-	$("#C6").click(function(){
-		av_moves("C6");
-	});
-	$("#C8").click(function(){
-		av_moves("C8");
-	});
-	$("#F1").click(function(){
-		av_moves("F1");
-	});
-	$("#F3").click(function(){
-		av_moves("F3");
-	});
-	$("#F5").click(function(){
-		av_moves("F5");
-	});
-	$("#F7").click(function(){
-		av_moves("F7");
-	});
-	$("#G2").click(function(){
-		av_moves("G2");
-	});
-	$("#G4").click(function(){
-		av_moves("G4");
-	});
-	$("#G6").click(function(){
-		av_moves("G6");
-	});
-	$("#G8").click(function(){
-		av_moves("G8");
-	});
-	$("#H1").click(function(){
-		av_moves("H1");
-	});
-	$("#H3").click(function(){
-		av_moves("H3");
-	});
-	$("#H5").click(function(){
-		av_moves("H5");
-	});
-	$("#H7").click(function(){
-		av_moves("H7");
-	});
+	for (e in moveto) {
+		(function(e){
+			var b = document.getElementById(moveMe[0]);
+			$("#"+moveto[e]).off("click");
+			$("#"+moveto[e]).on("click", function(){
+				$("#"+moveto[e]).append(b);
+			});
+		})(e);
+	}
 };
 
+function click_functions() {
+	id = make_id();
+	for (e in id) {
+		(function(e){
+			$("#"+id[e]).on("click", function(){
+				av_moves(id[e]);
+			});
+		})(e);
+	}
+};
 make_checkers();
