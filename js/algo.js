@@ -227,7 +227,7 @@ var av_moves = function(square) {
 	if (turn == true) {
 		for (e in moves.p1_moves) {
 			if (e == square) {
-				if (p1_tokens.indexOf(square+"tok") != -1 ) {
+				if (p1_tokens.indexOf($("#"+square).children().attr('id')) != -1 ) {
 					for (a in e) {
 						if ($("#"+moves.p1_moves[e][a]).is(":empty") == true){
 							if ($("#"+square).is(":empty") == false) {
@@ -247,7 +247,7 @@ var av_moves = function(square) {
 	} else {
 		for (e in moves.p2_moves) {
 			if (e == square) {
-				if (p2_tokens.indexOf(square+"tok") != -1) {
+				if (p2_tokens.indexOf($("#"+square).children().attr('id')) != -1) {
 					for (a in e) {
 						if ($("#"+moves.p2_moves[e][a]).is(":empty") == true){
 							if ($("#"+square).is(":empty") == false) {
@@ -257,7 +257,6 @@ var av_moves = function(square) {
 									reset_moves();
 								}, 1500);
 								moveto.push(moves["p2_moves"][e][a]);
-								moveMe.push(p2_tokens[p2_tokens.indexOf(square+"tok")]);
 							}
 						}
 					}
@@ -267,13 +266,31 @@ var av_moves = function(square) {
 	}
 	for (e in moveto) {
 		(function(e){
-			var b = document.getElementById(moveMe[0]);
+			var b = $("#"+square).children();
 			$("#"+moveto[e]).off("click");
 			$("#"+moveto[e]).on("click", function(){
 				$("#"+moveto[e]).append(b);
+				turns();
 			});
+			setTimeout(function(){
+				$("#"+moveto[e]).off("click");
+				$("#"+moveto[e]).on("click", function(){
+					reset_functions();
+				});
+			}, 1500);
 		})(e);
 	}
+	console.log(moveto)
+};
+
+function reset_functions() {
+	var id = make_id();
+	for (e in id){
+		(function(e){
+			$("#"+id[e]).off("click");
+		})(e);
+	}
+	click_functions();
 };
 
 function click_functions() {
