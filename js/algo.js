@@ -157,6 +157,7 @@ function turns(){
 	}
 };
 
+
 var av_moves = function(square) {
 	var p2_tokens = ["A2tok","A4tok","A6tok","A8tok","B1tok","B3tok","B5tok","B7tok","C2tok","C4tok","C6tok","C8tok"];
 	var p1_tokens = ["F1tok","F3tok","F5tok","F7tok","G2tok","G4tok","G6tok","G8tok","H1tok","H3tok","H5tok","H7tok"];
@@ -221,25 +222,113 @@ var av_moves = function(square) {
 			"H5": ["G6", "G4"],
 			"H7": ["G8","G6"]
 		}
+	};
+	var jumps = {
+		"p1_jumps": {
+			"H1G2": "F3",
+			"H3G4": "F5",
+			"H5G6": "F7",
+			"H7G6": "F5",
+			"H5G4": "F3",
+			"H3G2": "F1",
+			"G2F3": "E4",
+			"G4F5": "E6",
+			"G6F7": "E8",
+			"G8F7": "E6",
+			"G6F5": "E4",
+			"G4F3": "E2",
+			"F1E2": "D3",
+			"F3E4": "D5",
+			"F5E6": "D7",
+			"F7E6": "D5",
+			"F5E4": "D3",
+			"F3E2": "D1",
+			"E2D3": "C4",
+			"E4D5": "C6",
+			"E6D7": "C8",
+			"E8D7": "C6",
+			"E6D5": "C4",
+			"E4D3": "C2",
+			"D1C2": "B3",
+			"D3C4": "B5",
+			"D5C6": "B7",
+			"D7C6": "B5",
+			"D5C4": "B3",
+			"D3C2": "B1",
+			"C2B3": "A4",
+			"C4B5": "A6",
+			"C6B7": "A8",
+			"C8B7": "A6",
+			"C6B5": "A4",
+			"C4B3": "A2"
+		},		"p2_jumps": {
+			"A2B3": "C4",
+			"A4B5": "C6",
+			"A6B7": "C8",
+			"A8B7": "C6",
+			"A6B5": "C4",
+			"A4B3": "C2",
+			"B1C2": "D3",
+			"B3C4": "D5",
+			"B5C6": "D7",
+			"B7C6": "D5",
+			"B5C4": "D3",
+			"B3C2": "D1",
+			"C2D3": "E4",
+			"C4D5": "E6",
+			"C6D7": "E8",
+			"C8D7": "E6",
+			"C6D5": "E4",
+			"C4D3": "E2",
+			"D1E2": "F3",
+			"D3E4": "F5",
+			"D5E6": "F7",
+			"D7E6": "F5",
+			"D5E4": "F3",
+			"D3E2": "F1",
+			"F1G2": "H3",
+			"F3G4": "H5",
+			"F5G6": "H7",
+			"F7G6": "H5",
+			"F5G4": "H3",
+			"F3G2": "H1"
+		}
 	}
+
+
 	var moveto = [];
 	var moveMe = [];
+	var move_kill = [];
 	if (turn == true) {
 		for (e in moves.p1_moves) {
 			if (e == square) {
 				if (p1_tokens.indexOf($("#"+square).children().attr('id')) != -1 ) {
 					for (a in e) {
-						if ($("#"+moves.p1_moves[e][a]).is(":empty") == true){
-							if ($("#"+square).is(":empty") == false) {
+						if ($("#"+square).is(":empty") == false) {
+							if ($("#"+moves.p1_moves[e][a]).is(":empty") == true) {
 								i = document.getElementById(moves["p1_moves"][e][a]);
 								$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
 								setTimeout(function(){
 									reset_moves();
-								}, 1500);
+								}, 2000);
 								moveto.push(moves["p1_moves"][e][a]);
 								moveMe.push(p1_tokens[p1_tokens.indexOf(square+"tok")]);
+							} else {
+								for (tok in p2_tokens) {
+									if (p2_tokens[tok] == $("#"+moves.p1_moves[e][a]).children().attr('id')) {
+										if ($("#"+jumps.p1_jumps[square+moves.p1_moves[e][a]]).is(':empty')) {
+											var i = document.getElementById(jumps.p1_jumps[square+moves.p1_moves[e][a]]);
+											$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
+											setTimeout(function(){
+												reset_moves();
+											}, 2000);
+											move_kill.push(jumps.p1_jumps[square+moves.p1_moves[e][a]]);
+											move_kill.push(moves.p1_moves[e][a]);
+										}
+									}
+								}
 							}
-						}
+						}		
 					}
 				}
 			}
@@ -249,20 +338,54 @@ var av_moves = function(square) {
 			if (e == square) {
 				if (p2_tokens.indexOf($("#"+square).children().attr('id')) != -1) {
 					for (a in e) {
-						if ($("#"+moves.p2_moves[e][a]).is(":empty") == true){
-							if ($("#"+square).is(":empty") == false) {
+						if ($("#"+square).is(":empty") == false) {
+							if ($("#"+moves.p2_moves[e][a]).is(":empty") == true) {
 								i = document.getElementById(moves["p2_moves"][e][a]);
 								$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
 								setTimeout(function(){
 									reset_moves();
-								}, 1500);
+								}, 2000);
 								moveto.push(moves["p2_moves"][e][a]);
+							} else {
+								for (tok in p1_tokens) {
+									if (p1_tokens[tok] == $("#"+moves.p2_moves[e][a]).children().attr('id')) {
+										if ($("#"+jumps.p2_jumps[square+moves.p2_moves[e][a]]).is(':empty')) {
+											var i = document.getElementById(jumps.p2_jumps[square+moves.p2_moves[e][a]]);
+											$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
+											setTimeout(function(){
+												reset_moves();
+											}, 2000);
+											move_kill.push(jumps.p2_jumps[square+moves.p2_moves[e][a]]);
+											move_kill.push(moves.p2_moves[e][a]);
+
+										}
+									}
+								}
 							}
 						}
 					}
 				}
 			}
 		}
+	}
+	if (moveto == []) {
+		alert("Maybe isn't your turn, BITCH!");
+	}
+	if (move_kill.length == 2) {
+		var b = $("#"+square).children();
+		var t = $("#"+move_kill[1]).children();
+		$("#"+move_kill[0]).off("click");
+		$("#"+move_kill[0]).on("click", function(){
+			$("#"+move_kill[0]).append(b);
+			$(t).remove();
+			turns();
+		});
+		setTimeout(function(){
+			$("#"+move_kill[0]).off("click");
+			$("#"+move_kill[0]).on("click", function(){
+				reset_functions();
+			});
+		}, 2000);
 	}
 	for (e in moveto) {
 		(function(e){
@@ -277,10 +400,9 @@ var av_moves = function(square) {
 				$("#"+moveto[e]).on("click", function(){
 					reset_functions();
 				});
-			}, 1500);
+			}, 2000);
 		})(e);
 	}
-	console.log(moveto)
 };
 
 function reset_functions() {
