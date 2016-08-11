@@ -311,26 +311,28 @@ var av_moves = function(square) {
 	var moveto = [];
 	var move_kill = [];
 	var above = [];
-	if (turn == true) {
-		if ($("#"+square).children().children().attr('id') == 'pac') {
-			for (e in moves) {
-				for (a in moves[e]) {
-					if (a == square) {
-						for (mov in moves[e][a]) {
-							if ($("#"+moves[e][a][mov]).is(':empty') == true) {
-								var i = document.getElementById(moves[e][a][mov]);
-								$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
-								moveto.push(moves[e][a][mov]);
-							} else {
-								if (p2_tokens.indexOf($("#"+moves[e][a][mov]).children().attr('id')) != -1 ) {
-									for (jump in jumps) {
-										for (other in jumps[jump]) {
-											if (other == square+moves[e][a][mov]) {
-												if ($("#"+jumps[jump][other]).is(':empty') == true) {
-													var i = document.getElementById(jumps[jump][other]);
-													$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
-													move_kill.push(jumps[jump][other]);
-													above.push(moves[e][a][mov])
+	if (turn == true) { 
+		if (p1_tokens.indexOf($("#"+square).children().attr('id')) != -1 ) {
+			if ($("#"+square).children().children().attr('id') == 'pac') {
+				for (e in moves) {
+					for (a in moves[e]) {
+						if (a == square) {
+							for (mov in moves[e][a]) {
+								if ($("#"+moves[e][a][mov]).is(':empty') == true) {
+									var i = document.getElementById(moves[e][a][mov]);
+									$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
+									moveto.push(moves[e][a][mov]);
+								} else {
+									if (p2_tokens.indexOf($("#"+moves[e][a][mov]).children().attr('id')) != -1 ) {
+										for (jump in jumps) {
+											for (other in jumps[jump]) {
+												if (other == square+moves[e][a][mov]) {
+													if ($("#"+jumps[jump][other]).is(':empty') == true) {
+														var i = document.getElementById(jumps[jump][other]);
+														$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
+														move_kill.push(jumps[jump][other]);
+														above.push(moves[e][a][mov])
+													}
 												}
 											}
 										}
@@ -369,6 +371,40 @@ var av_moves = function(square) {
 			}
 		}
 	} else {
+		if ($("#"+square).children().children().attr('id') == 'pac') {
+			if (p2_tokens.indexOf($("#"+square).children().attr('id')) != -1 ) {
+				if ($("#"+square).children().children().attr('id') == 'pac') {
+					for (e in moves) {
+						for (a in moves[e]) {
+							if (a == square) {
+								for (mov in moves[e][a]) {
+									if ($("#"+moves[e][a][mov]).is(':empty') == true) {
+										var i = document.getElementById(moves[e][a][mov]);
+										$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
+										moveto.push(moves[e][a][mov]);
+									} else {
+										if (p1_tokens.indexOf($("#"+moves[e][a][mov]).children().attr('id')) != -1 ) {
+											for (jump in jumps) {
+												for (other in jumps[jump]) {
+													if (other == square+moves[e][a][mov]) {
+														if ($("#"+jumps[jump][other]).is(':empty') == true) {
+															var i = document.getElementById(jumps[jump][other]);
+															$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
+															move_kill.push(jumps[jump][other]);
+															above.push(moves[e][a][mov])
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 		for (e in moves.p2_moves) {
 			if (e == square) {
 				if (p2_tokens.indexOf($("#"+square).children().attr('id')) != -1) {
