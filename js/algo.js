@@ -1,6 +1,7 @@
 
 var green = '<div style="display:block; padding:0px; margin:0px; width:63px; height:63px; float:left; background-color:#17A70D;" id="%data%"></div>';
 var black = '<div style="display:block; padding:0px; margin:0px; width:63px; height:63px; float:left; background-color:#000000;" id="%data%"></div>';
+var pacman = '<div id="pac" style="width: 0px;height: 0px;border-right: 15px solid transparent;border-top: 15px solid black;border-left: 15px solid black;border-bottom: 15px solid black;border-top-left-radius: 15px;border-top-right-radius: 15px;border-bottom-left-radius: 15px;border-bottom-right-radius: 15px; margin-top: 5px;"></div>';
 var tokens = [];
 
 function make_id() {
@@ -424,6 +425,7 @@ function end(){
 			delete_token(p1_tokens[e]);
 		}
 		turn = true;
+		game_started = false;
 		p1_dead = [];
 		p2_dead = [];
 	}
