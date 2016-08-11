@@ -297,8 +297,8 @@ var av_moves = function(square) {
 
 
 	var moveto = [];
-	var moveMe = [];
 	var move_kill = [];
+	var above = [];
 	if (turn == true) {
 		for (e in moves.p1_moves) {
 			if (e == square) {
@@ -312,7 +312,6 @@ var av_moves = function(square) {
 									reset_moves();
 								}, 2000);
 								moveto.push(moves["p1_moves"][e][a]);
-								moveMe.push(p1_tokens[p1_tokens.indexOf(square+"tok")]);
 							} else {
 								for (tok in p2_tokens) {
 									if (p2_tokens[tok] == $("#"+moves.p1_moves[e][a]).children().attr('id')) {
@@ -323,7 +322,7 @@ var av_moves = function(square) {
 												reset_moves();
 											}, 2000);
 											move_kill.push(jumps.p1_jumps[square+moves.p1_moves[e][a]]);
-											move_kill.push(moves.p1_moves[e][a]);
+											above.push(moves.p1_moves[e][a]);
 										}
 									}
 								}
@@ -356,7 +355,7 @@ var av_moves = function(square) {
 												reset_moves();
 											}, 2000);
 											move_kill.push(jumps.p2_jumps[square+moves.p2_moves[e][a]]);
-											move_kill.push(moves.p2_moves[e][a]);
+											above.push(moves.p2_moves[e][a]);
 
 										}
 									}
@@ -367,25 +366,25 @@ var av_moves = function(square) {
 				}
 			}
 		}
-	}
-	if (moveto == []) {
-		alert("Maybe isn't your turn, BITCH!");
-	}
-	if (move_kill.length == 2) {
-		var b = $("#"+square).children();
-		var t = $("#"+move_kill[1]).children();
-		$("#"+move_kill[0]).off("click");
-		$("#"+move_kill[0]).on("click", function(){
-			$("#"+move_kill[0]).append(b);
-			$(t).remove();
-			turns();
-		});
-		setTimeout(function(){
-			$("#"+move_kill[0]).off("click");
-			$("#"+move_kill[0]).on("click", function(){
-				reset_functions();
+	};
+	 
+	for (e in move_kill) {
+		(function(e){
+			var b = $("#"+square).children();
+			var t = $("#"+above[e]).children();
+			$("#"+move_kill[e]).off("click");
+			$("#"+move_kill[e]).on("click", function(){
+				$("#"+move_kill[e]).append(b);
+				$(t).remove();
+				turns();
 			});
-		}, 2000);
+			setTimeout(function(){
+				$("#"+move_kill[e]).off("click");
+				$("#"+move_kill[e]).on("click", function(){
+					reset_functions();
+				});
+			}, 2000);
+		})(e);
 	}
 	for (e in moveto) {
 		(function(e){
@@ -425,4 +424,5 @@ function click_functions() {
 		})(e);
 	}
 };
+
 make_checkers();
