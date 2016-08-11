@@ -167,6 +167,7 @@ function turns(){
 var av_moves = function(square) {
 	var p2_tokens = ["A2tok","A4tok","A6tok","A8tok","B1tok","B3tok","B5tok","B7tok","C2tok","C4tok","C6tok","C8tok"];
 	var p1_tokens = ["F1tok","F3tok","F5tok","F7tok","G2tok","G4tok","G6tok","G8tok","H1tok","H3tok","H5tok","H7tok"];
+	var tops = ["A2","A4","A6","A8", "H1","H3","H5","H7"];
 	var moves = {
 		"p2_moves": {
 			"A2": ["B3","B1"],
@@ -389,6 +390,9 @@ var av_moves = function(square) {
 						alert("Player 1 has won the game!");
 					}
 				}
+				if (tops.indexOf(move_kill[e]) != -1) {
+					$(b).append(pacman);
+				}
 				$(t).remove();
 				turns();
 				reset_functions();
@@ -403,6 +407,9 @@ var av_moves = function(square) {
 				$("#"+moveto[e]).append(b);
 				turns();
 				$("#"+moveto[e]).off("click");
+				if (tops.indexOf(moveto[e]) != -1) {
+					$(b).append(pacman);
+				}
 				reset_functions();
 			});
 		})(e);
