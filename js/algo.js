@@ -460,8 +460,10 @@ var av_moves = function(square) {
 					}
 				}
 				$(t).remove();
-				turns();
+				console.log(move_kill[e]);
 				reset_functions();
+				av_moves(move_kill[e]);
+				turns();
 			});
 		})(e);
 	}
