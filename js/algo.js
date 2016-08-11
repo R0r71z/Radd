@@ -136,6 +136,8 @@ function reset() {
 		}
 		turn = true;
 		tokenSquares();
+		p1_dead = [];
+		p2_dead = [];
 	}
 };
 
@@ -147,6 +149,8 @@ function reset_moves() {
 };
 
 var turn = true;
+var p1_dead = [];
+var p2_dead = [];
 
 function turns(){
 	if (turn == true) {
@@ -262,7 +266,8 @@ var av_moves = function(square) {
 			"C8B7": "A6",
 			"C6B5": "A4",
 			"C4B3": "A2"
-		},		"p2_jumps": {
+		},		
+		"p2_jumps": {
 			"A2B3": "C4",
 			"A4B5": "C6",
 			"A6B7": "C8",
@@ -287,6 +292,12 @@ var av_moves = function(square) {
 			"D7E6": "F5",
 			"D5E4": "F3",
 			"D3E2": "F1",
+			"E2F3": "G4",
+			"E4F5": "G6",
+			"E6F7": "G8",
+			"E8F7": "G6",
+			"E6F5": "G4",
+			"E4F3": "G2",
 			"F1G2": "H3",
 			"F3G4": "H5",
 			"F5G6": "H7",
@@ -356,7 +367,6 @@ var av_moves = function(square) {
 			}
 		}
 	};
-
 	for (e in move_kill) {
 		(function(e){
 			var b = $("#"+square).children();
@@ -364,6 +374,20 @@ var av_moves = function(square) {
 			$("#"+move_kill[e]).off("click");
 			$("#"+move_kill[e]).on("click", function(){
 				$("#"+move_kill[e]).append(b);
+				if (p1_tokens.indexOf($(t).attr('id')) != -1){
+					p1_dead.push($(t).attr('id'));
+					if (p1_dead.length === p1_tokens.length) {
+						end();
+						alert("Player 2 has won the game!");
+					}
+				} 
+				else {
+					p2_dead.push($(t).attr('id'));
+					if (p2_dead.length === p2_tokens.length) {
+						end();
+						alert("Player 1 has won the game!");
+					}
+				}
 				$(t).remove();
 				turns();
 				reset_functions();
@@ -387,6 +411,23 @@ var av_moves = function(square) {
 	},1000);
 };
 
+function end(){
+	var p2_tokens = ["#A2tok","#A4tok","#A6tok","#A8tok","#B1tok","#B3tok","#B5tok","#B7tok","#C2tok","#C4tok","#C6tok","#C8tok"];
+	var p1_tokens = ["#F1tok","#F3tok","#F5tok","#F7tok","#G2tok","#G4tok","#G6tok","#G8tok","#H1tok","#H3tok","#H5tok","#H7tok"];
+	if (game_started == false) {
+		alert("Hit play first!");
+	} else {
+		for (e in p2_tokens){
+			delete_token(p2_tokens[e]);
+		}
+		for (e in p1_tokens) {
+			delete_token(p1_tokens[e]);
+		}
+		turn = true;
+		p1_dead = [];
+		p2_dead = [];
+	}
+}
 function reset_functions() {
 	var id = make_id();
 	for (e in id){
