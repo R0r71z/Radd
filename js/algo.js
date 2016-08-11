@@ -134,6 +134,7 @@ function reset() {
 		for (e in p1_tokens) {
 			delete_token(p1_tokens[e]);
 		}
+		turn = true;
 		tokenSquares();
 	}
 };
@@ -308,9 +309,6 @@ var av_moves = function(square) {
 							if ($("#"+moves.p1_moves[e][a]).is(":empty") == true) {
 								i = document.getElementById(moves["p1_moves"][e][a]);
 								$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
-								setTimeout(function(){
-									reset_moves();
-								}, 2000);
 								moveto.push(moves["p1_moves"][e][a]);
 							} else {
 								for (tok in p2_tokens) {
@@ -318,9 +316,6 @@ var av_moves = function(square) {
 										if ($("#"+jumps.p1_jumps[square+moves.p1_moves[e][a]]).is(':empty')) {
 											var i = document.getElementById(jumps.p1_jumps[square+moves.p1_moves[e][a]]);
 											$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
-											setTimeout(function(){
-												reset_moves();
-											}, 2000);
 											move_kill.push(jumps.p1_jumps[square+moves.p1_moves[e][a]]);
 											above.push(moves.p1_moves[e][a]);
 										}
@@ -341,9 +336,6 @@ var av_moves = function(square) {
 							if ($("#"+moves.p2_moves[e][a]).is(":empty") == true) {
 								i = document.getElementById(moves["p2_moves"][e][a]);
 								$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px blue");
-								setTimeout(function(){
-									reset_moves();
-								}, 2000);
 								moveto.push(moves["p2_moves"][e][a]);
 							} else {
 								for (tok in p1_tokens) {
@@ -351,9 +343,6 @@ var av_moves = function(square) {
 										if ($("#"+jumps.p2_jumps[square+moves.p2_moves[e][a]]).is(':empty')) {
 											var i = document.getElementById(jumps.p2_jumps[square+moves.p2_moves[e][a]]);
 											$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
-											setTimeout(function(){
-												reset_moves();
-											}, 2000);
 											move_kill.push(jumps.p2_jumps[square+moves.p2_moves[e][a]]);
 											above.push(moves.p2_moves[e][a]);
 
@@ -367,7 +356,7 @@ var av_moves = function(square) {
 			}
 		}
 	};
-	 
+
 	for (e in move_kill) {
 		(function(e){
 			var b = $("#"+square).children();
@@ -377,13 +366,8 @@ var av_moves = function(square) {
 				$("#"+move_kill[e]).append(b);
 				$(t).remove();
 				turns();
+				reset_functions();
 			});
-			setTimeout(function(){
-				$("#"+move_kill[e]).off("click");
-				$("#"+move_kill[e]).on("click", function(){
-					reset_functions();
-				});
-			}, 2000);
 		})(e);
 	}
 	for (e in moveto) {
@@ -393,15 +377,14 @@ var av_moves = function(square) {
 			$("#"+moveto[e]).on("click", function(){
 				$("#"+moveto[e]).append(b);
 				turns();
-			});
-			setTimeout(function(){
 				$("#"+moveto[e]).off("click");
-				$("#"+moveto[e]).on("click", function(){
-					reset_functions();
-				});
-			}, 2000);
+				reset_functions();
+			});
 		})(e);
 	}
+	setTimeout(function(){
+		reset_moves();
+	},1000);
 };
 
 function reset_functions() {
@@ -411,6 +394,7 @@ function reset_functions() {
 			$("#"+id[e]).off("click");
 		})(e);
 	}
+	reset_moves();
 	click_functions();
 };
 
