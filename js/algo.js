@@ -60,7 +60,7 @@ function show_nl() {
 	make_cols();
 	make_rows();
 	$(document.getElementById("show").remove());
-	$('#gamearea').append('<button id="hide" type="button" onclick="hide_nl()" style="color: black; background-color:gray; float:left; margin-top:20px;"><b>Hide Numbers/Letters</b></button>');
+	$('#gamearea').append('<button id="hide" type="button" onclick="hide_nl()" style="color: black; background-color:gray; float:left; margin-top:20px;"><b>Esconder</b></button>');
 };
 
 
@@ -70,7 +70,7 @@ function hide_nl() {
 	$('#gamearea').prepend('<div id="col" style="width: 504px; height: 63px; margin:0px;"></div>');
 	$('#gamearea').prepend('<div id="row" style="width: 63px; height:504px; float:left; margin-top: 80px;"></div>');
 	$(document.getElementById('hide').remove());
-	$('#gamearea').append('<button id="show" type="button" onclick="show_nl()" style="color: black; background-color:gray; float:left; margin-top:20px;"><b>Show Numbers/Letters</b></button>');
+	$('#gamearea').append('<button id="show" type="button" onclick="show_nl()" style="color: black; background-color:gray; float:left; margin-top:20px;"><b>Mostrar</b></button>');
 
 };
 
@@ -112,14 +112,14 @@ function play() {
 	if (game_started == false) {
 		tokenSquares();
 		click_functions();
-		$("#gamearea").append('<div id="turn" style="width: 120px; height: 50px; float: right; margin-right: 50px; display: block; background-color: black;"></div>');
-		$("#gamearea").append('<div style="width: 80px; height: 50px; float: right; margin-right: 10px; font-size: 4ex; display: block; line-height: 50px"><b>Turn</b></div>');
+		$("#gamearea").append('<div id="turn" style="width: 120px; height: 50px; float: right; margin-right: 50px; display: block; background-color: white; border: solid"></div>');
+		$("#gamearea").append('<div style="width: 80px; height: 50px; float: right; margin-right: 10px; font-size: 4ex; display: block; line-height: 50px"><b>Juega</b></div>');
 		$("#turn").append('<div id="turntok" style="width: 30px; height: 30px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px;border-radius: 50px; margin-top: 8px; margin-left: 0px; border: double;"></div>');
 		game_started = true;
-		$("#p1score").append("Player 1<hr>0");
-		$("#p2score").append("Player 2<hr>0")
+		$("#p1score").append("Jugador 1<hr>0");
+		$("#p2score").append("Jugador 2<hr>0")
 	} else {
-		alert("Game already started!");
+		alert("El juego ya ha empezado!");
 	}
 };
 
@@ -135,7 +135,7 @@ function reset() {
 	var p2_tokens = ["#A2tok","#A4tok","#A6tok","#A8tok","#B1tok","#B3tok","#B5tok","#B7tok","#C2tok","#C4tok","#C6tok","#C8tok"];
 	var p1_tokens = ["#F1tok","#F3tok","#F5tok","#F7tok","#G2tok","#G4tok","#G6tok","#G8tok","#H1tok","#H3tok","#H5tok","#H7tok"];
 	if (game_started == false) {
-		alert("Hit play first!");
+		alert("Primero dale a play, broder!");
 	} else {
 		for (e in p2_tokens){
 			delete_token(p2_tokens[e]);
@@ -457,7 +457,7 @@ var av_moves = function(square) {
 					$("#p2score").append("Player 2 <hr>" + p2_score );
 					if (p1_dead.length === p1_tokens.length) {
 						end();
-						alert("Player 2 has won the game!");
+						alert("El Jugador 1 gana!");
 					}
 				} 
 				else {
@@ -467,7 +467,7 @@ var av_moves = function(square) {
 					$("#p1score").append("Player 1 <hr>" + p1_score);
 					if (p2_dead.length === p2_tokens.length) {
 						end();
-						alert("Player 1 has won the game!");
+						alert("El Jugador 2 gana!");
 					}
 				}
 				if (tops.indexOf(move_kill[e]) != -1) {
@@ -508,7 +508,7 @@ function end(){
 	var p2_tokens = ["#A2tok","#A4tok","#A6tok","#A8tok","#B1tok","#B3tok","#B5tok","#B7tok","#C2tok","#C4tok","#C6tok","#C8tok"];
 	var p1_tokens = ["#F1tok","#F3tok","#F5tok","#F7tok","#G2tok","#G4tok","#G6tok","#G8tok","#H1tok","#H3tok","#H5tok","#H7tok"];
 	if (game_started == false) {
-		alert("Hit play first!");
+		alert("Primer dale a play, broder!");
 	} else {
 		for (e in p2_tokens){
 			delete_token(p2_tokens[e]);
