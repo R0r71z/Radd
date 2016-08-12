@@ -109,6 +109,9 @@ function play() {
 	if (game_started == false) {
 		tokenSquares();
 		click_functions();
+		$("#gamearea").append('<div id="turn" style="width: 120px; height: 50px; float: right; margin-right: 50px; display: block; background-color: black;"></div>');
+		$("#gamearea").append('<div style="width: 80px; height: 50px; float: right; margin-right: 10px; font-size: 4ex; display: block; line-height: 50px"><b>Turn</b></div>');
+		$("#turn").append('<div id="turntok" style="width: 30px; height: 30px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px;border-radius: 50px; margin-top: 8px; margin-left: 0px; border: double;"></div>');
 		game_started = true;
 	} else {
 		alert("Game already started!");
@@ -155,9 +158,13 @@ var p2_dead = [];
 
 function turns(){
 	if (turn == true) {
+		$("#turntok").remove();
+		$("#turn").append('<div id="turntok" style="width: 30px; height: 30px; background: pink; -moz-border-radius: 50px; -webkit-border-radius: 50px;border-radius: 50px; margin-top: 8px; margin-left: 0px; border: double;"></div>');
 		turn = false;
 	} else {
 		if (turn == false) {
+			$("#turntok").remove();
+					$("#turn").append('<div id="turntok" style="width: 30px; height: 30px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px;border-radius: 50px; margin-top: 8px; margin-left: 0px; border: double;"></div>');
 			turn = true;
 		}
 	}
@@ -462,7 +469,6 @@ var av_moves = function(square) {
 				$(t).remove();
 				console.log(move_kill[e]);
 				reset_functions();
-				av_moves(move_kill[e]);
 				turns();
 			});
 		})(e);
@@ -519,6 +525,7 @@ function reset_functions() {
 };
 
 function click_functions() {
+
 	id = make_id();
 	for (e in id) {
 		(function(e){
