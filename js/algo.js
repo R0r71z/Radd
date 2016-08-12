@@ -3,6 +3,13 @@ var green = '<div style="display:block; padding:0px; margin:0px; width:63px; hei
 var black = '<div style="display:block; padding:0px; margin:0px; width:63px; height:63px; float:left; background-color:#000000;" id="%data%"></div>';
 var pacman = '<div id="pac" style="width: 0px;height: 0px;border-right: 15px solid transparent;border-top: 15px solid black;border-left: 15px solid black;border-bottom: 15px solid black;border-top-left-radius: 15px;border-top-right-radius: 15px;border-bottom-left-radius: 15px;border-bottom-right-radius: 15px; margin-top: 5px;"></div>';
 var tokens = [];
+var id = make_id();
+var game_started = false;
+var turn = true;
+var p1_dead = [];
+var p2_dead = [];
+var p1_score = 0;
+var p2_score = 0;
 
 function make_id() {
 	letters = ["A","B","C","D","E","F","G","H"];
@@ -15,9 +22,6 @@ function make_id() {
 	}
 	return id;
 };
-
-var id = make_id();
-
 
 function make_cols() {
 	for (var i=1;i<9;i++) {
@@ -103,7 +107,6 @@ function tokenSquares() {
 	}
 };
 
-var game_started = false;
 
 function play() {
 	if (game_started == false) {
@@ -113,6 +116,8 @@ function play() {
 		$("#gamearea").append('<div style="width: 80px; height: 50px; float: right; margin-right: 10px; font-size: 4ex; display: block; line-height: 50px"><b>Turn</b></div>');
 		$("#turn").append('<div id="turntok" style="width: 30px; height: 30px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px;border-radius: 50px; margin-top: 8px; margin-left: 0px; border: double;"></div>');
 		game_started = true;
+		$("#p1score").append("Player 1<hr>0");
+		$("#p2score").append("Player 2<hr>0")
 	} else {
 		alert("Game already started!");
 	}
@@ -142,6 +147,8 @@ function reset() {
 		tokenSquares();
 		p1_dead = [];
 		p2_dead = [];
+		p1_score = 0;
+		p2_score = 0;
 	}
 };
 
@@ -151,10 +158,6 @@ function reset_moves() {
 		$("#"+id[e]).css("-webkit-box-shadow", "none");
 	}
 };
-
-var turn = true;
-var p1_dead = [];
-var p2_dead = [];
 
 function turns(){
 	if (turn == true) {
@@ -449,6 +452,9 @@ var av_moves = function(square) {
 				$("#"+move_kill[e]).append(b);
 				if (p1_tokens.indexOf($(t).attr('id')) != -1){
 					p1_dead.push($(t).attr('id'));
+					p2_score = p2_score + 1;
+					$("#p2score").empty();
+					$("#p2score").append("Player 2 <hr>" + p2_score );
 					if (p1_dead.length === p1_tokens.length) {
 						end();
 						alert("Player 2 has won the game!");
@@ -456,6 +462,9 @@ var av_moves = function(square) {
 				} 
 				else {
 					p2_dead.push($(t).attr('id'));
+					p1_score = p1_score + 1;
+					$("#p1score").empty();
+					$("#p1score").append("Player 1 <hr>" + p1_score);
 					if (p2_dead.length === p2_tokens.length) {
 						end();
 						alert("Player 1 has won the game!");
@@ -511,6 +520,8 @@ function end(){
 		game_started = false;
 		p1_dead = [];
 		p2_dead = [];
+		$("#p1score").empty();
+		$("#p2score").empty();
 	}
 }
 function reset_functions() {
