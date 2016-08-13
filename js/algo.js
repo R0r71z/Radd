@@ -2,6 +2,8 @@
 var green = '<div style="display:block; padding:0px; margin:0px; width:63px; height:63px; float:left; background-color:#17A70D;" id="%data%"></div>';
 var black = '<div style="display:block; padding:0px; margin:0px; width:63px; height:63px; float:left; background-color:#000000;" id="%data%"></div>';
 var pacman = '<div id="pac" style="width: 0px;height: 0px;border-right: 15px solid transparent;border-top: 15px solid black;border-left: 15px solid black;border-bottom: 15px solid black;border-top-left-radius: 15px;border-top-right-radius: 15px;border-bottom-left-radius: 15px;border-bottom-right-radius: 15px; margin-top: 5px;"></div>';
+var t1 = '<div id="1" style="width: 30px; height: 30px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px;border-radius: 50px; margin-top: 8px; margin-left: 0px; border: double;"></div>'
+var t2 = '<div id="2" style="width: 30px; height: 30px; background: pink; -moz-border-radius: 50px; -webkit-border-radius: 50px;border-radius: 50px; margin-top: 8px; margin-left: 0px; border: double;"></div>'
 var tokens = [];
 var id = make_id();
 var game_started = false;
@@ -104,10 +106,18 @@ function play() {
 		$("#gamearea").append('<div id="juega" style="width: 80px; height: 50px; float: right; margin-right: 10px; font-size: 4ex; display: block; line-height: 50px"><b>Juega</b></div>');
 		$("#turn").append('<div id="turntok" style="width: 30px; height: 30px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px;border-radius: 50px; margin-top: 8px; margin-left: 0px; border: double;"></div>');
 		game_started = true;
-		$("#p1score").append("Jugador 1<hr>0");
-		$("#p2score").append("Jugador 2<hr>0")
+		$("#p1score").append(t1+"<hr>0");
+		$("#p2score").append(t2+"<hr>0")
+		$("#dialog").append("<b>El juego ha empezado, buena suerte!</b>");
+		setTimeout(function(){	
+			$("#dialog").empty();
+		},4000);
 	} else {
-		alert("El juego ya ha empezado!");
+		$("#dialog").empty();
+		$("#dialog").append("<b>El juego ya ha empezado</b>");
+		setTimeout(function(){	
+			$("#dialog").empty();
+		},7000);
 	}
 };
 function delete_token(token) {
@@ -121,7 +131,11 @@ function reset() {
 	var p2_tokens = ["#A2tok","#A4tok","#A6tok","#A8tok","#B1tok","#B3tok","#B5tok","#B7tok","#C2tok","#C4tok","#C6tok","#C8tok"];
 	var p1_tokens = ["#F1tok","#F3tok","#F5tok","#F7tok","#G2tok","#G4tok","#G6tok","#G8tok","#H1tok","#H3tok","#H5tok","#H7tok"];
 	if (game_started == false) {
-		alert("Primero dale a play, broder!");
+		$("#dialog").empty();
+		$("#dialog").append("<b>Primero dale a Play, aborto fallido</b>");
+		setTimeout(function(){	
+			$("#dialog").empty();
+		},4000);
 	} else {
 		for (e in p2_tokens){
 			delete_token(p2_tokens[e]);
@@ -500,20 +514,22 @@ function multi_jump(square) {
 						p1_dead.push($(t).attr('id'));
 						p2_score = p2_score + 1;
 						$("#p2score").empty();
-						$("#p2score").append("Player 2 <hr>" + p2_score );
+						$("#p2score").append(t2 + "<hr>" + p2_score );
 						if (p1_dead.length === p1_tokens.length) {
 							end();
-							alert("El Jugador 1 gana!");
+							$("#dialog").empty();
+							$("#dialog").append(t1 + "<b>ha ganado!</b>");
 						}
 					} 
 					else {
 						p2_dead.push($(t).attr('id'));
 						p1_score = p1_score + 1;
 						$("#p1score").empty();
-						$("#p1score").append("Player 1 <hr>" + p1_score);
+						$("#p1score").append(t1+ "<hr>" + p1_score);
 						if (p2_dead.length === p2_tokens.length) {
 							end();
-							alert("El Jugador 2 gana!");
+							$("#dialog").empty();
+							$("#dialog").append(t2 + "<b>ha ganado!</b>");
 						}
 					}
 					if (tops.indexOf(move_kill[e]) != -1) {
@@ -809,20 +825,22 @@ var av_moves = function(square) {
 					p1_dead.push($(t).attr('id'));
 					p2_score = p2_score + 1;
 					$("#p2score").empty();
-					$("#p2score").append("Player 2 <hr>" + p2_score );
+					$("#p2score").append( t2 + "<hr>" + p2_score );
 					if (p1_dead.length === p1_tokens.length) {
 						end();
-						alert("El Jugador 1 gana!");
+						$("#dialog").empty();
+						$("#dialog").append(t2 + "<b>ha ganado!</b>");
 					}
 				} 
 				else {
 					p2_dead.push($(t).attr('id'));
 					p1_score = p1_score + 1;
 					$("#p1score").empty();
-					$("#p1score").append("Player 1 <hr>" + p1_score);
+					$("#p1score").append(t1 + "<hr>" + p1_score);
 					if (p2_dead.length === p2_tokens.length) {
 						end();
-						alert("El Jugador 2 gana!");
+						$("#dialog").empty();
+						$("#dialog").append(t1 + "<b>ha ganado!</b>");
 					}
 				}
 				if (tops.indexOf(move_kill[e]) != -1) {
@@ -833,6 +851,7 @@ var av_moves = function(square) {
 				$(t).remove();
 				console.log(move_kill[e]);
 				multi_jump(move_kill[e]);
+				reset_moves();
 			});
 		})(e);
 	}
@@ -850,6 +869,7 @@ var av_moves = function(square) {
 					}
 				}
 				reset_functions();
+				reset_moves();
 			});
 		})(e);
 	}
@@ -860,24 +880,21 @@ var av_moves = function(square) {
 function end(){
 	var p2_tokens = ["#A2tok","#A4tok","#A6tok","#A8tok","#B1tok","#B3tok","#B5tok","#B7tok","#C2tok","#C4tok","#C6tok","#C8tok"];
 	var p1_tokens = ["#F1tok","#F3tok","#F5tok","#F7tok","#G2tok","#G4tok","#G6tok","#G8tok","#H1tok","#H3tok","#H5tok","#H7tok"];
-	if (game_started == false) {
-		alert("Primer dale a play, broder!");
-	} else {
-		for (e in p2_tokens){
-			delete_token(p2_tokens[e]);
-		}
-		for (e in p1_tokens) {
-			delete_token(p1_tokens[e]);
-		}
-		turn = true;
-		game_started = false;
-		p1_dead = [];
-		p2_dead = [];
-		$("#p1score").empty();
-		$("#p2score").empty();
-		$("#juega").remove();
-		$("#turn").remove();
+	for (e in p2_tokens){
+		delete_token(p2_tokens[e]);
 	}
+	for (e in p1_tokens) {
+		delete_token(p1_tokens[e]);
+	}
+	turn = true;
+	game_started = false;
+	p1_dead = [];
+	p2_dead = [];
+	$("#p1score").empty();
+	$("#p2score").empty();
+	$("#juega").remove();
+	$("#turn").remove();
+	$("#dialog").remove();
 }
 function reset_functions() {
 	var id = make_id();
@@ -905,7 +922,11 @@ function off() {
 			$("#"+id[e]).off("click");
 			if ($("#"+id[e]).is(':empty') == false){
 				$("#"+id[e]).on("click", function() {
-					alert("Termina tu movimiento, tiguerazo!")
+					$("#dialog").empty();
+					$("#dialog").append("<b>Termina tu movimiento!</b>")
+					setTimeout(function(){
+						$("#dialog").empty();
+					},4000);
 				});
 			};
 		})(e);
