@@ -533,10 +533,11 @@ function multi_jump(square) {
 					},4000);
 				})
 				$("#"+move_kill[e]).on("click", function(){
-					var i = document.getElementById(move_kill[e]);
-					$(i).css("-webkit-box-shadow", "none");
-					var s = document.getElementById(square);
-					$(s).css("-webkit-box-shadow", "none");
+					//var i = document.getElementById(move_kill[e]);
+					//$(i).css("-webkit-box-shadow", "none");
+					//var s = document.getElementById(square);
+					//$(s).css("-webkit-box-shadow", "none");
+					reset_moves();
 					$("#"+move_kill[e]).append(b);
 					if (p1_tokens.indexOf($(t).attr('id')) != -1){
 						p1_dead.push($(t).attr('id'));
@@ -544,9 +545,11 @@ function multi_jump(square) {
 						$("#p2score").empty();
 						$("#p2score").append(t2 + "<hr>" + p2_score );
 						if (p1_dead.length === p1_tokens.length) {
-							end();
 							$("#dialog").empty();
 							$("#dialog").append(t1 + "<b>ha ganado!</b>");
+							setTimeout(function(){
+								end();
+							}, 4000);
 						}
 					} 
 					else {
@@ -555,9 +558,11 @@ function multi_jump(square) {
 						$("#p1score").empty();
 						$("#p1score").append(t1+ "<hr>" + p1_score);
 						if (p2_dead.length === p2_tokens.length) {
-							end();
 							$("#dialog").empty();
 							$("#dialog").append(t2 + "<b>ha ganado!</b>");
+							setTimeout(function(){
+								end();
+							}, 4000);
 						}
 					}
 					if (tops.indexOf(move_kill[e]) != -1) {
@@ -855,9 +860,11 @@ var av_moves = function(square) {
 					$("#p2score").empty();
 					$("#p2score").append( t2 + "<hr>" + p2_score );
 					if (p1_dead.length === p1_tokens.length) {
-						end();
 						$("#dialog").empty();
 						$("#dialog").append(t2 + "<b>ha ganado!</b>");
+						setTimeout(function(){
+							end();
+						}, 4000);
 					}
 				} 
 				else {
@@ -866,9 +873,11 @@ var av_moves = function(square) {
 					$("#p1score").empty();
 					$("#p1score").append(t1 + "<hr>" + p1_score);
 					if (p2_dead.length === p2_tokens.length) {
-						end();
 						$("#dialog").empty();
 						$("#dialog").append(t1 + "<b>ha ganado!</b>");
+						setTimeout(function(){
+							end();
+						}, 4000);
 					}
 				}
 				if (tops.indexOf(move_kill[e]) != -1) {
