@@ -10,7 +10,6 @@ var p1_dead = [];
 var p2_dead = [];
 var p1_score = 0;
 var p2_score = 0;
-
 function make_id() {
 	letters = ["A","B","C","D","E","F","G","H"];
 	var nums = ["1","2","3","4","5","6","7","8"];
@@ -22,21 +21,18 @@ function make_id() {
 	}
 	return id;
 };
-
 function make_cols() {
 	for (var i=1;i<9;i++) {
 		var number = '<div style="display:block; padding:0px;margin:0px; width:63px;height:63px;float:left; background-color: #FFFFFF; font-size: 5ex">%data%</div>'
 		$("#col").append(number.replace("%data%", i));
 	}
 };
-
 function make_rows() {
 	for (e in letters) {
 		var number = '<div style="display:block; padding:0px;margin:0px; width:63px;height:63px;float:right; background-color: #FFFFFF; font-size: 5ex">%data%</div>'
 		$("#row").append(number.replace("%data%", letters[e]));
 	}
 };
-
 function make_checkers() {
 	var count = 0;
 	while (count<4) {
@@ -55,15 +51,12 @@ function make_checkers() {
 		count += 1
 	}
 };
-
 function show_nl() {
 	make_cols();
 	make_rows();
 	$(document.getElementById("show").remove());
 	$('#gamearea').append('<button id="hide" type="button" onclick="hide_nl()" style="color: black; background-color:gray; float:left; margin-top:20px;"><b>Esconder</b></button>');
 };
-
-
 function hide_nl() {
 	$(document.getElementById("row").remove());
 	$(document.getElementById("col").remove());
@@ -73,13 +66,11 @@ function hide_nl() {
 	$('#gamearea').append('<button id="show" type="button" onclick="show_nl()" style="color: black; background-color:gray; float:left; margin-top:20px;"><b>Mostrar</b></button>');
 
 };
-
 var token = function(h,w,color) {
 	this.color = color;
 	this.height = h;
 	this.width = w;
 };
-
 var draw = function(rad,m) {
 	var element = '<div id="' + m.replace("#", "") +'tok" style="width: %width%px; height: %height%px; background: %color%; -moz-border-radius: 50px; -webkit-border-radius: 50px;border-radius: 50px; %addposition%"></div>'
 	var element = element.replace("%height%", rad.height);
@@ -88,8 +79,7 @@ var draw = function(rad,m) {
 	var element = element.replace("%addposition%", "margin-top: 10px; margin-left: 0px; border: double;");
 	tokens.push(m +'tok');
 	$(m).append(element);
-};
-	
+};	
 function tokenSquares() {
 	var p2_squares = ["A2","A4","A6","A8","B1","B3","B5","B7","C2","C4","C6","C8"];
 	var p1_squares = ["F1","F3","F5","F7","G2","G4","G6","G8","H1","H3","H5","H7"];
@@ -106,8 +96,6 @@ function tokenSquares() {
 		}
 	}
 };
-
-
 function play() {
 	if (game_started == false) {
 		tokenSquares();
@@ -122,7 +110,6 @@ function play() {
 		alert("El juego ya ha empezado!");
 	}
 };
-
 function delete_token(token) {
 	if (document.getElementById(token.replace("#","")) != null) {
 		$(token).remove();
@@ -130,7 +117,6 @@ function delete_token(token) {
 		console.log("There is no such token")
 	}
 };
-
 function reset() {
 	var p2_tokens = ["#A2tok","#A4tok","#A6tok","#A8tok","#B1tok","#B3tok","#B5tok","#B7tok","#C2tok","#C4tok","#C6tok","#C8tok"];
 	var p1_tokens = ["#F1tok","#F3tok","#F5tok","#F7tok","#G2tok","#G4tok","#G6tok","#G8tok","#H1tok","#H3tok","#H5tok","#H7tok"];
@@ -151,14 +137,12 @@ function reset() {
 		p2_score = 0;
 	}
 };
-
 function reset_moves() {
 	id = make_id();
 	for (e in id) {
 		$("#"+id[e]).css("-webkit-box-shadow", "none");
 	}
 };
-
 function turns(){
 	if (turn == true) {
 		$("#turntok").remove();
@@ -172,8 +156,8 @@ function turns(){
 		}
 	}
 };
-
 function multi_jump(square) {
+	off();
 	var p2_tokens = ["A2tok","A4tok","A6tok","A8tok","B1tok","B3tok","B5tok","B7tok","C2tok","C4tok","C6tok","C8tok"];
 	var p1_tokens = ["F1tok","F3tok","F5tok","F7tok","G2tok","G4tok","G6tok","G8tok","H1tok","H3tok","H5tok","H7tok"];
 	var tops = ["A2","A4","A6","A8", "H1","H3","H5","H7"];
@@ -502,6 +486,7 @@ function multi_jump(square) {
 	}
 	console.log(move_kill.length == 0)
 	if (move_kill.length == 0) {
+		reset_functions();
 		turns();
 	}else {
 		for (e in move_kill) {
@@ -538,17 +523,12 @@ function multi_jump(square) {
 					}
 					$(t).remove();
 					console.log(move_kill[e]);
-					reset_functions();
 					multi_jump(move_kill[e]);
 				});
 			})(e);
 		}
-		setTimeout(function(){
-			reset_moves();
-		},1000);
 	};
 }
-
 var av_moves = function(square) {
 	var p2_tokens = ["A2tok","A4tok","A6tok","A8tok","B1tok","B3tok","B5tok","B7tok","C2tok","C4tok","C6tok","C8tok"];
 	var p1_tokens = ["F1tok","F3tok","F5tok","F7tok","G2tok","G4tok","G6tok","G8tok","H1tok","H3tok","H5tok","H7tok"];
@@ -852,7 +832,6 @@ var av_moves = function(square) {
 				}
 				$(t).remove();
 				console.log(move_kill[e]);
-				reset_functions();
 				multi_jump(move_kill[e]);
 			});
 		})(e);
@@ -878,7 +857,6 @@ var av_moves = function(square) {
 		reset_moves();
 	},1000);
 };
-
 function end(){
 	var p2_tokens = ["#A2tok","#A4tok","#A6tok","#A8tok","#B1tok","#B3tok","#B5tok","#B7tok","#C2tok","#C4tok","#C6tok","#C8tok"];
 	var p1_tokens = ["#F1tok","#F3tok","#F5tok","#F7tok","#G2tok","#G4tok","#G6tok","#G8tok","#H1tok","#H3tok","#H5tok","#H7tok"];
@@ -908,12 +886,9 @@ function reset_functions() {
 			$("#"+id[e]).off("click");
 		})(e);
 	}
-	reset_moves();
 	click_functions();
 };
-
 function click_functions() {
-
 	id = make_id();
 	for (e in id) {
 		(function(e){
@@ -923,29 +898,18 @@ function click_functions() {
 		})(e);
 	}
 };
-
+function off() {
+	var id = make_id();
+	for (e in id){
+		(function(e){
+			$("#"+id[e]).off("click");
+			if ($("#"+id[e]).is(':empty') == false){
+				$("#"+id[e]).on("click", function() {
+					alert("Termina tu movimiento, tiguerazo!")
+				});
+			};
+		})(e);
+	}
+	reset_moves();
+};
 make_checkers();
-function test() {
-	delete_token("#F1tok")
-	delete_token("#F3tok")
-	delete_token("#F5tok")
-	delete_token("#F7tok")
-	delete_token("#G2tok")
-	delete_token("#G4tok")
-	delete_token("#G6tok")
-	delete_token("#G8tok")
-	delete_token("#C2tok")
-	delete_token("#C4tok")
-	delete_token("#C6tok")
-	delete_token("#C8tok")
-	delete_token("#B1tok")
-	delete_token("#B3tok")
-	delete_token("#B5tok")
-	delete_token("#B7tok")
-
-	$("#F3").append($("#A2").children())
-	$("#D5").append($("#A4").children())
-	$("#B7").append($("#A6").children())
-	$("#D1").append($("#A8").children())
-
-}
