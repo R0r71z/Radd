@@ -4,6 +4,10 @@ var black = '<div style="display:block; padding:0px; margin:0px; width:63px; hei
 var pacman = '<div id="pac" style="width: 0px;height: 0px;border-right: 15px solid transparent;border-top: 15px solid black;border-left: 15px solid black;border-bottom: 15px solid black;border-top-left-radius: 15px;border-top-right-radius: 15px;border-bottom-left-radius: 15px;border-bottom-right-radius: 15px; margin-top: 5px;"></div>';
 var t1 = '<div id="1" style="width: 30px; height: 30px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px;border-radius: 50px; margin-top: 8px; margin-left: 0px; border: double;"></div>'
 var t2 = '<div id="2" style="width: 30px; height: 30px; background: pink; -moz-border-radius: 50px; -webkit-border-radius: 50px;border-radius: 50px; margin-top: 8px; margin-left: 0px; border: double;"></div>'
+var legend = '<center><div id="legend" style="width:200px; height: 200px; border: solid 1px; float: left; position: absolute; top: 400px; font-size: 3ex; line-height: 30px"><b>Leyenda<hr></b>'
+var blue = '<div style="width:200px; height: 40px; display: block; background-color: white; -webkit-box-shadow: inset 0px 0px 0px 3px blue; float: left; margin-right: 10px;">Mover</div>'
+var red = '<div style="width:200px; height: 40px; display: block; background-color: white; -webkit-box-shadow: inset 0px 0px 0px 3px red; float: left; margin-right: 10px; margin-top: 5px">Matar</div>'
+var brown =  '<div style="width:200px; height: 40px; display: block; background-color: white; -webkit-box-shadow: inset 0px 0px 0px 3px brown; float: left; margin-top: 5px">Cancelar</div>'
 var tokens = [];
 var id = make_id();
 var game_started = false;
@@ -102,6 +106,7 @@ function play() {
 	if (game_started == false) {
 		tokenSquares();
 		click_functions();
+		make_legend();
 		$("#gamearea").append('<div id="turn" style="width: 120px; height: 50px; float: right; margin-right: 50px; display: block; background-color: white; border: solid"></div>');
 		$("#gamearea").append('<div id="juega" style="width: 80px; height: 50px; float: right; margin-right: 10px; font-size: 4ex; display: block; line-height: 50px"><b>Juega</b></div>');
 		$("#turn").append('<div id="turntok" style="width: 30px; height: 30px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px;border-radius: 50px; margin-top: 8px; margin-left: 0px; border: double;"></div>');
@@ -117,7 +122,7 @@ function play() {
 		$("#dialog").append("<b>El juego ya ha empezado</b>");
 		setTimeout(function(){	
 			$("#dialog").empty();
-		},7000);
+		},8000);
 	}
 };
 function delete_token(token) {
@@ -410,6 +415,8 @@ function multi_jump(square) {
 													if ($("#"+jumps[jump][other]).is(':empty') == true) {
 														var i = document.getElementById(jumps[jump][other]);
 														$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
+														var s = document.getElementById(square);
+														$(s).css("-webkit-box-shadow", "inset 0px 0px 0px 5px brown");
 														move_kill.push(jumps[jump][other]);
 														above.push(moves[e][a][mov])
 													}
@@ -435,6 +442,8 @@ function multi_jump(square) {
 										if ($("#"+jumps.p1_jumps[square+moves.p1_moves[e][a]]).is(':empty')) {
 											var i = document.getElementById(jumps.p1_jumps[square+moves.p1_moves[e][a]]);
 											$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
+											var s = document.getElementById(square);
+											$(s).css("-webkit-box-shadow", "inset 0px 0px 0px 5px brown");
 											move_kill.push(jumps.p1_jumps[square+moves.p1_moves[e][a]]);
 											above.push(moves.p1_moves[e][a]);
 										}
@@ -460,7 +469,9 @@ function multi_jump(square) {
 												if (other == square+moves[e][a][mov]) {
 													if ($("#"+jumps[jump][other]).is(':empty') == true) {
 														var i = document.getElementById(jumps[jump][other]);
+														var s = document.getElementById(square);
 														$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
+														$(s).css("-webkit-box-shadow", "inset 0px 0px 0px 5px brown")
 														move_kill.push(jumps[jump][other]);
 														above.push(moves[e][a][mov])
 													}
@@ -485,7 +496,9 @@ function multi_jump(square) {
 									if (p1_tokens[tok] == $("#"+moves.p2_moves[e][a]).children().attr('id')) {
 										if ($("#"+jumps.p2_jumps[square+moves.p2_moves[e][a]]).is(':empty')) {
 											var i = document.getElementById(jumps.p2_jumps[square+moves.p2_moves[e][a]]);
+											var s = document.getElementById(square);
 											$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
+											$(s).css("-webkit-box-shadow", "inset 0px 0px 0px 5px brown");
 											move_kill.push(jumps.p2_jumps[square+moves.p2_moves[e][a]]);
 											above.push(moves.p2_moves[e][a]);
 										}
@@ -508,9 +521,22 @@ function multi_jump(square) {
 				var b = $("#"+square).children();
 				var t = $("#"+above[e]).children();
 				$("#"+move_kill[e]).off("click");
+				$("#"+square).off("click");
+				$("#"+square).on("click", function(){
+					turns();
+					reset_moves();
+					reset_functions();
+					$("#dialog").empty();
+					$("#dialog").append("Movimiento cancelado, muy bien pensado. (Hasta rima!)");
+					setTimeout(function(){
+						$("#dialog").empty();
+					},4000);
+				})
 				$("#"+move_kill[e]).on("click", function(){
 					var i = document.getElementById(move_kill[e]);
 					$(i).css("-webkit-box-shadow", "none");
+					var s = document.getElementById(square);
+					$(s).css("-webkit-box-shadow", "none");
 					$("#"+move_kill[e]).append(b);
 					if (p1_tokens.indexOf($(t).attr('id')) != -1){
 						p1_dead.push($(t).attr('id'));
@@ -932,4 +958,10 @@ function off() {
 		})(e);
 	}
 };
+function make_legend() {
+	$("body").append(legend);
+	$("#legend").append(blue);
+	$("#legend").append(red);
+	$("#legend").append(brown);
+}
 make_checkers();
