@@ -113,7 +113,7 @@ function play() {
 		tokenSquares();
 		click_functions();
 		$("#gamearea").append('<div id="turn" style="width: 120px; height: 50px; float: right; margin-right: 50px; display: block; background-color: white; border: solid"></div>');
-		$("#gamearea").append('<div style="width: 80px; height: 50px; float: right; margin-right: 10px; font-size: 4ex; display: block; line-height: 50px"><b>Juega</b></div>');
+		$("#gamearea").append('<div id="juega" style="width: 80px; height: 50px; float: right; margin-right: 10px; font-size: 4ex; display: block; line-height: 50px"><b>Juega</b></div>');
 		$("#turn").append('<div id="turntok" style="width: 30px; height: 30px; background: gray; -moz-border-radius: 50px; -webkit-border-radius: 50px;border-radius: 50px; margin-top: 8px; margin-left: 0px; border: double;"></div>');
 		game_started = true;
 		$("#p1score").append("Jugador 1<hr>0");
@@ -173,6 +173,381 @@ function turns(){
 	}
 };
 
+function multi_jump(square) {
+	var p2_tokens = ["A2tok","A4tok","A6tok","A8tok","B1tok","B3tok","B5tok","B7tok","C2tok","C4tok","C6tok","C8tok"];
+	var p1_tokens = ["F1tok","F3tok","F5tok","F7tok","G2tok","G4tok","G6tok","G8tok","H1tok","H3tok","H5tok","H7tok"];
+	var tops = ["A2","A4","A6","A8", "H1","H3","H5","H7"];
+	var jumps = {
+		"p1_jumps": {
+			"H1G2": "F3",
+			"H3G4": "F5",
+			"H5G6": "F7",
+			"H7G6": "F5",
+			"H5G4": "F3",
+			"H3G2": "F1",
+			"G2F3": "E4",
+			"G4F5": "E6",
+			"G6F7": "E8",
+			"G8F7": "E6",
+			"G6F5": "E4",
+			"G4F3": "E2",
+			"F1E2": "D3",
+			"F3E4": "D5",
+			"F5E6": "D7",
+			"F7E6": "D5",
+			"F5E4": "D3",
+			"F3E2": "D1",
+			"E2D3": "C4",
+			"E4D5": "C6",
+			"E6D7": "C8",
+			"E8D7": "C6",
+			"E6D5": "C4",
+			"E4D3": "C2",
+			"D1C2": "B3",
+			"D3C4": "B5",
+			"D5C6": "B7",
+			"D7C6": "B5",
+			"D5C4": "B3",
+			"D3C2": "B1",
+			"C2B3": "A4",
+			"C4B5": "A6",
+			"C6B7": "A8",
+			"C8B7": "A6",
+			"C6B5": "A4",
+			"C4B3": "A2"
+		},		
+		"p2_jumps": {
+			"A2B3": "C4",
+			"A4B5": "C6",
+			"A6B7": "C8",
+			"A8B7": "C6",
+			"A6B5": "C4",
+			"A4B3": "C2",
+			"B1C2": "D3",
+			"B3C4": "D5",
+			"B5C6": "D7",
+			"B7C6": "D5",
+			"B5C4": "D3",
+			"B3C2": "D1",
+			"C2D3": "E4",
+			"C4D5": "E6",
+			"C6D7": "E8",
+			"C8D7": "E6",
+			"C6D5": "E4",
+			"C4D3": "E2",
+			"D1E2": "F3",
+			"D3E4": "F5",
+			"D5E6": "F7",
+			"D7E6": "F5",
+			"D5E4": "F3",
+			"D3E2": "F1",
+			"E2F3": "G4",
+			"E4F5": "G6",
+			"E6F7": "G8",
+			"E8F7": "G6",
+			"E6F5": "G4",
+			"E4F3": "G2",
+			"F1G2": "H3",
+			"F3G4": "H5",
+			"F5G6": "H7",
+			"F7G6": "H5",
+			"F5G4": "H3",
+			"F3G2": "H1"
+		}
+	}
+	var moves = {
+		"p2_moves": {
+			"A2": ["B3","B1"],
+			"A4": ["B5", "B3"],
+			"A6": ["B7","B5"],
+			"A8": ["B7"],
+			"B1": ["C2"],
+			"B3": ["C4","C2"],
+			"B5": ["C6","C4"],
+			"B7": ["C8", "C6"],
+			"C2": ["D3","D1"],
+			"C4": ["D5","D3"],
+			"C6": ["D7","D5"],
+			"C8": ["D7"],
+			"D1": ["E2"],
+			"D3": ["E2","E4"],
+			"D5": ["E4","E6"],
+			"D7": ["E6", "E8"],
+			"E2": ["F1","F3"],
+			"E4": ["F3","F5"],
+			"E6": ["F5", "F7"],
+			"E8": ["F7"],
+			"F1": ["G2"],
+			"F3": ["G2","G4"],
+			"F5": ["G4","G6"],
+			"F7": ["G6","G8"],
+			"G2": ["H1","H3"],
+			"G4": ["H3","H5"],
+			"G6": ["H5","H7"],
+			"G8": ["H7"]
+		},
+		"p1_moves": {
+			"B1": ["A2"],
+			"B3": ["A4","A2"],
+			"B5": ["A6","A4"],
+			"B7": ["A8", "A6"],
+			"C2": ["B3","B1"],
+			"C4": ["B5","B3"],
+			"C6": ["B7","B5"],
+			"C8": ["B7"],
+			"D1": ["C2"],
+			"D3": ["C4","C2"],
+			"D5": ["C6","C4"],
+			"D7": ["C8", "C6"],
+			"E2": ["D3","D1"],
+			"E4": ["D5","D3"],
+			"E6": ["D7", "D5"],
+			"E8": ["D7"],
+			"F1": ["E2"],
+			"F3": ["E4","E2"],
+			"F5": ["E6","E4"],
+			"F7": ["E8","E6"],
+			"G2": ["F3","F1"],
+			"G4": ["F5","F3"],
+			"G6": ["F7","F5"],
+			"G8": ["F7"],
+			"H1": ["G2"],
+			"H3": ["G4","G2"],
+			"H5": ["G6", "G4"],
+			"H7": ["G8","G6"]
+		}
+	};
+	var jumps = {
+		"p1_jumps": {
+			"H1G2": "F3",
+			"H3G4": "F5",
+			"H5G6": "F7",
+			"H7G6": "F5",
+			"H5G4": "F3",
+			"H3G2": "F1",
+			"G2F3": "E4",
+			"G4F5": "E6",
+			"G6F7": "E8",
+			"G8F7": "E6",
+			"G6F5": "E4",
+			"G4F3": "E2",
+			"F1E2": "D3",
+			"F3E4": "D5",
+			"F5E6": "D7",
+			"F7E6": "D5",
+			"F5E4": "D3",
+			"F3E2": "D1",
+			"E2D3": "C4",
+			"E4D5": "C6",
+			"E6D7": "C8",
+			"E8D7": "C6",
+			"E6D5": "C4",
+			"E4D3": "C2",
+			"D1C2": "B3",
+			"D3C4": "B5",
+			"D5C6": "B7",
+			"D7C6": "B5",
+			"D5C4": "B3",
+			"D3C2": "B1",
+			"C2B3": "A4",
+			"C4B5": "A6",
+			"C6B7": "A8",
+			"C8B7": "A6",
+			"C6B5": "A4",
+			"C4B3": "A2"
+		},		
+		"p2_jumps": {
+			"A2B3": "C4",
+			"A4B5": "C6",
+			"A6B7": "C8",
+			"A8B7": "C6",
+			"A6B5": "C4",
+			"A4B3": "C2",
+			"B1C2": "D3",
+			"B3C4": "D5",
+			"B5C6": "D7",
+			"B7C6": "D5",
+			"B5C4": "D3",
+			"B3C2": "D1",
+			"C2D3": "E4",
+			"C4D5": "E6",
+			"C6D7": "E8",
+			"C8D7": "E6",
+			"C6D5": "E4",
+			"C4D3": "E2",
+			"D1E2": "F3",
+			"D3E4": "F5",
+			"D5E6": "F7",
+			"D7E6": "F5",
+			"D5E4": "F3",
+			"D3E2": "F1",
+			"E2F3": "G4",
+			"E4F5": "G6",
+			"E6F7": "G8",
+			"E8F7": "G6",
+			"E6F5": "G4",
+			"E4F3": "G2",
+			"F1G2": "H3",
+			"F3G4": "H5",
+			"F5G6": "H7",
+			"F7G6": "H5",
+			"F5G4": "H3",
+			"F3G2": "H1"
+		}
+	}
+	var move_kill = [];
+	var above = [];
+	if (turn == true) { 
+		if (p1_tokens.indexOf($("#"+square).children().attr('id')) != -1 ) {
+			if ($("#"+square).children().children().attr('id') == 'pac') {
+				for (e in moves) {
+					for (a in moves[e]) {
+						if (a == square) {
+							for (mov in moves[e][a]) {
+								if ($("#"+moves[e][a][mov]).is(':empty') == false) {
+									if (p2_tokens.indexOf($("#"+moves[e][a][mov]).children().attr('id')) != -1 ) {
+										for (jump in jumps) {
+											for (other in jumps[jump]) {
+												if (other == square+moves[e][a][mov]) {
+													if ($("#"+jumps[jump][other]).is(':empty') == true) {
+														var i = document.getElementById(jumps[jump][other]);
+														$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
+														move_kill.push(jumps[jump][other]);
+														above.push(moves[e][a][mov])
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		for (e in moves.p1_moves) {
+			if (e == square) {
+				if (p1_tokens.indexOf($("#"+square).children().attr('id')) != -1 ) {
+					for (a in e) {
+						if ($("#"+square).is(":empty") == false) {
+							if ($("#"+moves.p1_moves[e][a]).is(":empty") == false) {
+								for (tok in p2_tokens) {
+									if (p2_tokens[tok] == $("#"+moves.p1_moves[e][a]).children().attr('id')) {
+										if ($("#"+jumps.p1_jumps[square+moves.p1_moves[e][a]]).is(':empty')) {
+											var i = document.getElementById(jumps.p1_jumps[square+moves.p1_moves[e][a]]);
+											$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
+											move_kill.push(jumps.p1_jumps[square+moves.p1_moves[e][a]]);
+											above.push(moves.p1_moves[e][a]);
+										}
+									}
+								}
+							}
+						}		
+					}
+				}
+			}
+		}
+	} else {
+		if (p2_tokens.indexOf($("#"+square).children().attr('id')) != -1 ) {
+			if ($("#"+square).children().children().attr('id') == 'pac') {
+				for (e in moves) {
+					for (a in moves[e]) {
+						if (a == square) {
+							for (mov in moves[e][a]) {
+								if ($("#"+moves[e][a][mov]).is(':empty') == false) {
+									if (p1_tokens.indexOf($("#"+moves[e][a][mov]).children().attr('id')) != -1 ) {
+										for (jump in jumps) {
+											for (other in jumps[jump]) {
+												if (other == square+moves[e][a][mov]) {
+													if ($("#"+jumps[jump][other]).is(':empty') == true) {
+														var i = document.getElementById(jumps[jump][other]);
+														$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
+														move_kill.push(jumps[jump][other]);
+														above.push(moves[e][a][mov])
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		for (e in moves.p2_moves) {
+			if (e == square) {
+				if (p2_tokens.indexOf($("#"+square).children().attr('id')) != -1 ) {
+					for (a in e) {
+						if ($("#"+square).is(":empty") == false) {
+							if ($("#"+moves.p2_moves[e][a]).is(":empty") == false) {
+								for (tok in p1_tokens) {
+									if (p1_tokens[tok] == $("#"+moves.p2_moves[e][a]).children().attr('id')) {
+										if ($("#"+jumps.p2_jumps[square+moves.p2_moves[e][a]]).is(':empty')) {
+											var i = document.getElementById(jumps.p2_jumps[square+moves.p2_moves[e][a]]);
+											$(i).css("-webkit-box-shadow", "inset 0px 0px 0px 5px red");
+											move_kill.push(jumps.p2_jumps[square+moves.p2_moves[e][a]]);
+											above.push(moves.p2_moves[e][a]);
+										}
+									}
+								}
+							}
+						}		
+					}
+				}
+			}
+		}
+	}
+	console.log(move_kill.length == 0)
+	if (move_kill.length == 0) {
+		turns();
+	}else {
+		for (e in move_kill) {
+			(function(e){
+				var b = $("#"+square).children();
+				var t = $("#"+above[e]).children();
+				$("#"+move_kill[e]).off("click");
+				$("#"+move_kill[e]).on("click", function(){
+					$("#"+move_kill[e]).append(b);
+					if (p1_tokens.indexOf($(t).attr('id')) != -1){
+						p1_dead.push($(t).attr('id'));
+						p2_score = p2_score + 1;
+						$("#p2score").empty();
+						$("#p2score").append("Player 2 <hr>" + p2_score );
+						if (p1_dead.length === p1_tokens.length) {
+							end();
+							alert("El Jugador 1 gana!");
+						}
+					} 
+					else {
+						p2_dead.push($(t).attr('id'));
+						p1_score = p1_score + 1;
+						$("#p1score").empty();
+						$("#p1score").append("Player 1 <hr>" + p1_score);
+						if (p2_dead.length === p2_tokens.length) {
+							end();
+							alert("El Jugador 2 gana!");
+						}
+					}
+					if (tops.indexOf(move_kill[e]) != -1) {
+						if ($(b).is(':empty')) {
+							$(b).append(pacman);
+						}
+					}
+					$(t).remove();
+					console.log(move_kill[e]);
+					reset_functions();
+					multi_jump(move_kill[e]);
+				});
+			})(e);
+		}
+		setTimeout(function(){
+			reset_moves();
+		},1000);
+	};
+}
 
 var av_moves = function(square) {
 	var p2_tokens = ["A2tok","A4tok","A6tok","A8tok","B1tok","B3tok","B5tok","B7tok","C2tok","C4tok","C6tok","C8tok"];
@@ -478,7 +853,7 @@ var av_moves = function(square) {
 				$(t).remove();
 				console.log(move_kill[e]);
 				reset_functions();
-				turns();
+				multi_jump(move_kill[e]);
 			});
 		})(e);
 	}
@@ -522,6 +897,8 @@ function end(){
 		p2_dead = [];
 		$("#p1score").empty();
 		$("#p2score").empty();
+		$("#juega").remove();
+		$("#turn").remove();
 	}
 }
 function reset_functions() {
@@ -548,3 +925,27 @@ function click_functions() {
 };
 
 make_checkers();
+function test() {
+	delete_token("#F1tok")
+	delete_token("#F3tok")
+	delete_token("#F5tok")
+	delete_token("#F7tok")
+	delete_token("#G2tok")
+	delete_token("#G4tok")
+	delete_token("#G6tok")
+	delete_token("#G8tok")
+	delete_token("#C2tok")
+	delete_token("#C4tok")
+	delete_token("#C6tok")
+	delete_token("#C8tok")
+	delete_token("#B1tok")
+	delete_token("#B3tok")
+	delete_token("#B5tok")
+	delete_token("#B7tok")
+
+	$("#F3").append($("#A2").children())
+	$("#D5").append($("#A4").children())
+	$("#B7").append($("#A6").children())
+	$("#D1").append($("#A8").children())
+
+}
